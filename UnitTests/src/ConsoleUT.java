@@ -8,5 +8,6 @@ public class ConsoleUT {
         System.out.println("Hello World");
         School sc = new School("ORT", "Holon");
         sc.Test("TEST");
+
     }
 }
