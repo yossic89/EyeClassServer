@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!objectdb.jar
 *.war
 *.ear
 *.zip
