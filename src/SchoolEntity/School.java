@@ -3,8 +3,10 @@ package SchoolEntity;
 import Infra.EyeBase;
 import SchoolEntity.UsersEntity.User;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 
+@Entity
 public class School extends EyeBase {
 
     public School(String name, String address)
@@ -14,14 +16,20 @@ public class School extends EyeBase {
         classes = new ArrayList<>();
     }
 
-    public void Test(String d)
+    public boolean addClass(Class c)
     {
-        Log(d);
+        if (classes.contains(c))
+            return false;
+        classes.add(c);
+        return true;
     }
 
     public String GetName(){return schoolName;}
 
+    @Id
     private String schoolName;
     private String address;
+    //@ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     ArrayList<Class> classes;
 }

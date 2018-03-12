@@ -1,25 +1,110 @@
 package Engine;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import Infra.EyeBase;
+import SchoolEntity.School;
+import SchoolEntity.UsersEntity.Student;
+import SchoolEntity.UsersEntity.User;
 
-public class DBConnection {
+import javax.jdo.annotations.Transactional;
+import javax.persistence.*;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DBConnection extends EyeBase {
 
     public static synchronized DBConnection GetInstance()
     {
         if (m_db == null)
         {
             m_db = new DBConnection();
-
+            m_db.initDB();
         }
         return m_db;
     }
 
+    public void RestartDB()
+    {
+        Object location = emf.getProperties().get("objectdb.connection.path");
+
+        Close();
+        try{
+            if (Files.deleteIfExists(Paths.get(location.toString())))
+                Log("DB is deleted from " + location.toString());
+        }
+        catch (Exception e) {}
+
+        m_db.initDB();
+    }
+
+    public List<Object> query(String queryStr,Class obj)
+    {
+        Log("Query: "+ queryStr);
+        TypedQuery<Object> queryL = em.createQuery(queryStr, obj);
+        return queryL.getResultList();
+    }
+
+    public List<School> getAllSchool()
+    {
+        List<Object> list = query("SELECT s FROM School s", School.class);
+        List<School> retVal = new ArrayList<>();
+        for (Object obj : list)
+            retVal.add((School) obj);
+        return retVal;
+    }
+
+    public List<User> getAllUsersForSchool(String schoolName)
+    {
+        String query = String.format("SELECT p FROM User p WHERE p.m_school.schoolName=\"%s\"", schoolName);
+        List<Object> list = query(query, Student.class);
+        List<User> retVal = new ArrayList<>();
+        for (Object obj : list)
+            retVal.add((User)obj);
+        return retVal;
+    }
+
+    public SchoolEntity.Class getClassByName(String name)
+    {
+        SchoolEntity.Class retVal = null;
+        String query = String.format("SELECT c FROM Class c WHERE c.id=\"%s\"", name);
+        List<Object> list = query(query, SchoolEntity.Class.class);
+        if (list.size() > 0)
+            retVal = (SchoolEntity.Class)list.get(0);
+        return retVal;
+    }
+
     private void initDB()
     {
-        EntityManagerFactory emf =
-                Persistence.createEntityManagerFactory("$objectdb/EyeClassDB/ECDB.odb");
+        emf = Persistence.createEntityManagerFactory("$objectdb/EyeClassDB/ECDB.odb");
+        em = emf.createEntityManager();
+        //em.getTransaction().begin();
+    }
+
+    public void Close()
+    {
+        //em.getTransaction().commit();
+        em.close();
+        emf.close();
+    }
+
+    @Transactional
+    public boolean Save(Object obj)
+    {
+        if (em.contains(obj))
+            return false;
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        em.persist(obj);
+        tx.commit();
+        //em.getTransaction().commit();
+        return true;
     }
 
     private static DBConnection m_db = null;
+    EntityManager em;
+
+    EntityManagerFactory emf;
 }

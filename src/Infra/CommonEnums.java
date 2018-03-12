@@ -21,6 +21,8 @@ public class CommonEnums {
     public enum Curriculum{
         Math,
         History,
-
+        English,
+        Assembly,
+        Bible,
     }
 }

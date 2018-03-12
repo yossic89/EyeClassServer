@@ -1,9 +1,12 @@
 package SchoolEntity.UsersEntity;
 import Infra.EyeBase;
+import SchoolEntity.Class;
 import SchoolEntity.School;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+@MappedSuperclass
 public abstract class User extends EyeBase implements Serializable {
 
     public User(long id, String password, School school, String fullName) {
@@ -29,8 +32,10 @@ public abstract class User extends EyeBase implements Serializable {
         return m_fullName;
     }
 
+    @Id
     protected long m_id;
     protected String m_password;
-    protected School m_school;
     protected String m_fullName;
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = School.class)
+    protected School m_school;
 }
