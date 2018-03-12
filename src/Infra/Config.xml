@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+<Debug logDir="D:\EyeClass\EyeLogger" DebugMode="True"/>
+<OpenCV DebugByID="0" SamplingInterval="5"/>
+<Lessons PdfStore="D:\EyeClass\PDF"/>
+</Configuration>
