@@ -70,7 +70,7 @@ public class DBConnection extends EyeBase  {
     public List<User> getAllUsersForSchool(String schoolName)
     {
         String query = String.format("SELECT p FROM User p WHERE p.m_schoolId=\"%s\"", schoolName);
-        List<Object> list = query(query, Student.class);
+        List<Object> list = query(query, User.class);
         List<User> retVal = new ArrayList<>();
         for (Object obj : list)
             retVal.add((User)obj);

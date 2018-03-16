@@ -16,8 +16,9 @@ public class EyeClassEngine extends EyeBase {
     {
         for (School s : DBConnection.GetInstance().getAllSchool())
         {
-            Log("add " + s.GetName());
-            schoolsMap.put(s.GetName(), new SchoolServer(s));
+            SchoolServer ss = new SchoolServer(s);
+            ss.initMaps();
+            schoolsMap.put(s.GetName(), ss);
         }
     }
 
