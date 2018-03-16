@@ -20,7 +20,7 @@ public class SchoolServer extends EyeBase {
     {
         m_school = school;
         classMap = new HashMap<>();
-        studentsMap = new HashMap<>();
+        usersMap = new HashMap<>();
     }
 
     public void initMaps(){
@@ -78,7 +78,7 @@ public class SchoolServer extends EyeBase {
 
     public boolean addStudentToClass(String classId,Student student){
         //Add student to student maps
-        if (!checkIfStudentExist(student.getM_id())) studentsMap.put(student.getM_id(),student);
+        if (!checkIfStudentExist(student.getM_id())) usersMap.put(student.getM_id(),student);
         else return false;
 
         //check if class exist
@@ -102,18 +102,18 @@ public class SchoolServer extends EyeBase {
 
     //Users
     private boolean checkIfStudentExist(long studentId){
-        if (!studentsMap.containsKey(studentId)){
+        if (!usersMap.containsKey(studentId)){
             return false;
         }
         return true;
     }
 
     public void addStudentToMap(Student student){
-        studentsMap.put(student.getM_id(),student);
+        usersMap.put(student.getM_id(),student);
     }
 
     public Student getStudentFromMap(long studentId){
-        return studentsMap.get(studentId);
+        return (Student)usersMap.get(studentId);
     }
 
     public String getPassword(long studentId){
@@ -141,5 +141,5 @@ public class SchoolServer extends EyeBase {
 
     private School m_school;
     private HashMap<String, Class> classMap;
-    private HashMap<Long, Student> studentsMap;
+    private HashMap<Long, User> usersMap;
 }
