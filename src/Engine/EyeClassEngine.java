@@ -40,7 +40,6 @@ public class EyeClassEngine extends EyeBase {
        if (ret)
        {
            SchoolServer ss = new SchoolServer(s);
-           ss.initMaps();
            schoolsMap.put(s.GetName(), ss);
        }
 

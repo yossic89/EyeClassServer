@@ -27,6 +27,11 @@ public class SchoolServer extends EyeBase {
         //init classes
         for (SchoolEntity.Class c : DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName()))
             classMap.put(c.getID(), c);
+
+        //init users
+        for (SchoolEntity.UsersEntity.User user : DBConnection.GetInstance().getAllUsersForSchool(m_school.GetName()))
+            usersMap.put(user.getM_id(), user);
+
     }
 
     public School getSchool(){return m_school;}
@@ -55,6 +60,10 @@ public class SchoolServer extends EyeBase {
 
     public boolean addTeacher(Teacher t)
     {
+        if (checkIfUserExist(t.getM_id())) {
+            Log("addTeacher: The user with Id: "+ t.getM_id() + " is already exist");
+            return false;
+        }
         return DBConnection.GetInstance().Save(t);
     }
 
@@ -80,8 +89,11 @@ public class SchoolServer extends EyeBase {
 
     public boolean addStudentToClass(String classId,Student student){
         //Add student to student maps
-        if (!checkIfStudentExist(student.getM_id())) usersMap.put(student.getM_id(),student);
-        else return false;
+        if (!checkIfUserExist(student.getM_id())) usersMap.put(student.getM_id(),student);
+        else{
+            Log("addStudentToClass: The user with Id: "+ student.getM_id() + " is already exist");
+            return false;
+        }
 
         //check if class exist
         if (!checkIfClassExist(classId)) return false;
@@ -103,7 +115,7 @@ public class SchoolServer extends EyeBase {
     }
 
     //Users
-    private boolean checkIfStudentExist(long studentId){
+    private boolean checkIfUserExist(long studentId){
         if (!usersMap.containsKey(studentId)){
             return false;
         }
@@ -119,7 +131,7 @@ public class SchoolServer extends EyeBase {
     }
 
     public String getPassword(long studentId){
-        if (!checkIfStudentExist(studentId)){
+        if (!checkIfUserExist(studentId)){
             Log("getPassword: The student with the id: "+studentId +" is not exist.");
             return null;
         }
@@ -127,18 +139,18 @@ public class SchoolServer extends EyeBase {
     }
 
     public String getFullNameOfUser(long studentId){
-        if (!checkIfStudentExist(studentId)){
+        if (!checkIfUserExist(studentId)){
             Log("getFullNameOfUser: The student with the id: "+studentId +" is not exist.");
             return null;
         }
         return getStudentFromMap(studentId).getM_fullName();
     }
 
-    public School getSchoolOfUser(long studentId){
-        if (!checkIfStudentExist(studentId)){
+    public String getSchoolOfUser(long studentId){
+        if (!checkIfUserExist(studentId)){
             Log("getSchoolOfUser: The student with the id: "+studentId +" is not exist.");
         }
-        return getStudentFromMap(studentId).getM_school();
+        return getStudentFromMap(studentId).get_schoolId();
     }
 
     private School m_school;
