@@ -48,7 +48,7 @@ public class ConsoleUT {
         Class t = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1);
         if (t == null)
             server.addClass(new Class(CommonEnums.SchoolClasses.Grade11, 1, server.getSchool()));
-        m_class = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1);
+        m_class = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1).getID();
     }
 
     private void mainMenu(){
@@ -118,7 +118,7 @@ public class ConsoleUT {
         String pass = scr.nextLine();
         System.out.print("Enter full name: ");
         String name = scr.nextLine();
-        server.addStuent(new Student(id, pass, server.getSchool(), name, m_class));
+        server.addStudentToClass(m_class,new Student(id, pass, server.getSchool(), name, m_class));
     }
 
     private void addTeacher()
@@ -179,7 +179,7 @@ public class ConsoleUT {
             if (u instanceof Student)
             {
                 System.out.println("Student: " + u.getM_fullName());
-                System.out.println("Class: " + ((Student)u).getStudentClass().getID());
+                System.out.println("Class: " + (server.getClassFromMap(((Student) u).getStudentClassId()).GetClassName()));
             }
         }
     }
@@ -202,6 +202,6 @@ public class ConsoleUT {
 
     EyeClassEngine engine;
     SchoolServer server;
-    Class m_class;
+    String m_class;
 
 }

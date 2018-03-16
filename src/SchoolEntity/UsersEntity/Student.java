@@ -1,6 +1,5 @@
 package SchoolEntity.UsersEntity;
 
-import SchoolEntity.Class;
 import SchoolEntity.School;
 
 import javax.persistence.CascadeType;
@@ -10,17 +9,17 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Student extends User {
-    public Student(long id, String password, School school, String fullName, SchoolEntity.Class p_class) {
+    public Student(long id, String password, School school, String fullName,String classId) {
         super(id, password, school, fullName);
-        m_class = p_class;
+        m_classId = classId;
         //class_id=p_class.getID();
     }
 
-    public SchoolEntity.Class getStudentClass(){return  m_class;}
+    public String getStudentClassId(){return  m_classId;}
 
     //@OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private SchoolEntity.Class m_class;
+    private String m_classId;
     //@OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
    // private String class_id;
 }
