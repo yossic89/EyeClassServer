@@ -13,6 +13,7 @@
 # Package Files #
 *.jar
 !objectdb.jar
+!gson-2.2.2.jar
 *.war
 *.ear
 *.zip

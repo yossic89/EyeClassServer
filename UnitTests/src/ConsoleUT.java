@@ -19,17 +19,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUT {
-    public static void main(String [ ] args){
-       /* Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                System.out.println("Exit eyeClass server");
-                DBConnection.GetInstance().Close();
-            }
-        }));*/
 
-           new ConsoleUT().mainMenu();
-
-    }
 
     public ConsoleUT()
     {
@@ -51,7 +41,7 @@ public class ConsoleUT {
         m_class = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1);
     }
 
-    private void mainMenu(){
+    public void mainMenu(){
         System.out.println("Default school is Ort Eilat with class YA 1(יא 1)");
         List<String> menu = Arrays.asList("Reset all DB", "Show all users", "Add Student"
         ,"Add Teacher", "Add lesson", "Select lesson for teacher", "Exit" );
@@ -77,7 +67,6 @@ public class ConsoleUT {
                     addLesson();
                     break;
                 case 6:
-                    engine.Close();
                     System.out.println("BYE!");
                     return;
 
@@ -87,7 +76,7 @@ public class ConsoleUT {
 
     private void addLesson()
     {
-        System.out.println(Config.getInstance().getDebug().getLogDir());
+        /*System.out.println(Config.getInstance().getDebug().getLogDir());
         //print all teacher id
         for (User u : server.getAllUsers()) {
             if (u instanceof Teacher) {
@@ -96,9 +85,9 @@ public class ConsoleUT {
         }
         Scanner scr = new Scanner(System.in);
         System.out.println("Write your teacher id");
-        long id = scr.nextLong();
+        long id = scr.nextLong();*/
         try{
-            byte[] arr =  Files.readAllBytes(Paths.get("C:\\Lesson.pdf"));
+            byte[] arr =  Files.readAllBytes(Paths.get("Lesson.pdf"));
             PDFHandler.PDFSaveAck ack = PDFHandler.SaveAsPdf(arr);
             System.out.println("Save : " + ack.isSuccess() + " Where: " + ack.getPath());
         }

@@ -7,14 +7,16 @@ import SchoolEntity.UsersEntity.User;
 
 import javax.jdo.annotations.Transactional;
 import javax.persistence.*;
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBConnection extends EyeBase {
+public class DBConnection extends EyeBase  {
 
     public static synchronized DBConnection GetInstance()
     {
@@ -26,6 +28,15 @@ public class DBConnection extends EyeBase {
         return m_db;
     }
 
+    private DBConnection()
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                Close();
+            }
+        });
+    }
     public void RestartDB()
     {
         Object location = emf.getProperties().get("objectdb.connection.path");
@@ -83,7 +94,7 @@ public class DBConnection extends EyeBase {
         //em.getTransaction().begin();
     }
 
-    public void Close()
+    private void Close()
     {
         //em.getTransaction().commit();
         em.close();
@@ -107,4 +118,5 @@ public class DBConnection extends EyeBase {
     EntityManager em;
 
     EntityManagerFactory emf;
+
 }
