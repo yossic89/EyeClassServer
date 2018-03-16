@@ -26,16 +26,15 @@ public class Logger {
 
     public void write(String data) throws IOException {
         writer.write(data);
+        writer.newLine();
+        writer.flush();
     }
 
     private void initLogger()
     {
-
-        //CHAGNE IT
-        String path = "D:\\EyeLogger\\";
-        String dir = path + LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMYY_HHmmssSSS"));
+        String path = Config.getInstance().getDebug().getLogDir();
+        String dir = path +"\\"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMYY_HHmmssSSS"));
         String javaPath = Paths.get(dir).toString();
-        System.out.println(javaPath);
         if (!Files.exists(Paths.get(dir)))
         {
             try {
@@ -56,7 +55,6 @@ public class Logger {
 
     }
     private static Logger m_log = null;
-    private FileWriter file_writer = null;
     private BufferedWriter writer = null;
 
 }

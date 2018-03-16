@@ -9,8 +9,7 @@ import java.nio.file.Paths;
 
 public class PDFHandler {
 
-    //TODO by config
-    private static String path = "D:\\EyeClass\\PDF";
+    private static String path = Config.getInstance().getLessons().getPdfStore();
 
     public static PDFSaveAck SaveAsPdf(byte[] arr)
     {

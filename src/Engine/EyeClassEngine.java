@@ -44,13 +44,6 @@ public class EyeClassEngine extends EyeBase {
     }
 
 
-
-    public void Close()
-    {
-        DBConnection.GetInstance().Close();
-    }
-
-
     HashMap<String, SchoolServer> schoolsMap;
 
 }
