@@ -2,6 +2,7 @@ import Engine.DBConnection;
 import Engine.EyeClassEngine;
 import Engine.SchoolServer;
 import Infra.*;
+import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Student;
@@ -87,15 +88,21 @@ public class ConsoleUT {
         Scanner scr = new Scanner(System.in);
         System.out.println("Write your teacher id");
         long id = scr.nextLong();*/
-        try{
-            byte[] arr =  Files.readAllBytes(Paths.get("Lesson.pdf"));
-            PDFHandler.PDFSaveAck ack = PDFHandler.SaveAsPdf(arr);
-            System.out.println("Save : " + ack.isSuccess() + " Where: " + ack.getPath());
-        }
-        catch (Exception e){
-            System.out.println(e.toString());
-        }
+        byte[] arr;
+        try{ arr =  Files.readAllBytes(Paths.get("Lesson.pdf"));
 
+
+
+
+        String[] mop={"yes","no"};
+        MultipleQuestion q1= new MultipleQuestion("are you a student?", "yes", mop);
+        ArrayList<MultipleQuestion> alq=new ArrayList<>();
+        alq.add(q1);
+        boolean a =server.addLesson(arr, "fileush",123,CommonEnums.Curriculum.Bible, alq);
+        System.out.println(a? "Add lesson done" : "Add lesson fail");
+        }catch (Exception e){
+        System.out.println(e.toString());
+    }
     }
 
     private void addStudent()

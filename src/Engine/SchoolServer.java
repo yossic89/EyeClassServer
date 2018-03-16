@@ -41,7 +41,7 @@ public class SchoolServer extends EyeBase {
     public boolean addLesson(byte[] pdfBytes, String headline, long teacher_id, CommonEnums.Curriculum cur, ArrayList<MultipleQuestion> ques)
     {
         //check validity teacher_id
-        if (!DBConnection.GetInstance().IsUserExist(teacher_id))
+        if (!checkIfUserExist(teacher_id))
             return false;
         //save pdf
         PDFHandler.PDFSaveAck ack = PDFHandler.SaveAsPdf(pdfBytes);
