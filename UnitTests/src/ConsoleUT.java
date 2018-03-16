@@ -34,6 +34,7 @@ public class ConsoleUT {
         if (tmp == null)
             engine.AddSchool(new School("ORT Eilat", "HaTmarim 12 Eilat"));
         server = engine.getSchoolServer("ORT Eilat");
+        server.initMaps();
 
         Class t = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1);
         if (t == null)
