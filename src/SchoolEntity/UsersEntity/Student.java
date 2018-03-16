@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Student extends User {
-    public Student(long id, String password, School school, String fullName,String classId) {
+    public Student(long id, String password, String school, String fullName,String classId) {
         super(id, password, school, fullName);
         m_classId = classId;
         //class_id=p_class.getID();
@@ -17,9 +17,6 @@ public class Student extends User {
 
     public String getStudentClassId(){return  m_classId;}
 
-    //@OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private String m_classId;
-    //@OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
-   // private String class_id;
+
 }

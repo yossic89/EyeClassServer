@@ -107,7 +107,7 @@ public class ConsoleUT {
         String pass = scr.nextLine();
         System.out.print("Enter full name: ");
         String name = scr.nextLine();
-        server.addStudentToClass(m_class,new Student(id, pass, server.getSchool(), name, m_class));
+        server.addStudentToClass(m_class,new Student(id, pass, server.getSchool().GetName(), name, m_class));
     }
 
     private void addTeacher()
@@ -121,7 +121,7 @@ public class ConsoleUT {
         System.out.print("Enter full name: ");
         String name = scr.nextLine();
         ArrayList<CommonEnums.Curriculum> l = getCurriculum();
-        server.addTeacher(new Teacher(id, pass, server.getSchool(), name, l));
+        server.addTeacher(new Teacher(id, pass, server.getSchool().GetName(), name, l));
     }
 
     private ArrayList<CommonEnums.Curriculum> getCurriculum()

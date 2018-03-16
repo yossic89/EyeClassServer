@@ -23,7 +23,9 @@ public class SchoolServer extends EyeBase {
     }
 
     public void initMaps(){
-
+        //init classes
+        for (SchoolEntity.Class c : DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName()))
+            classMap.put(c.getID(), c);
     }
 
     public School getSchool(){return m_school;}
