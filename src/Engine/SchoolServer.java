@@ -3,6 +3,8 @@ package Engine;
 import Infra.CommonEnums;
 import Infra.EyeBase;
 import Infra.Logger;
+import Infra.PDFHandler;
+import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
@@ -36,10 +38,19 @@ public class SchoolServer extends EyeBase {
 
     public School getSchool(){return m_school;}
 
-    public boolean addLesson(byte[] pdfBytes, long teacher_id, CommonEnums.Curriculum cur, List<MultipleQuestion> ques)
+    public boolean addLesson(byte[] pdfBytes, String headline, long teacher_id, CommonEnums.Curriculum cur, ArrayList<MultipleQuestion> ques)
     {
-        //get teacher
-
+        //check validity teacher_id
+        if (!DBConnection.GetInstance().IsUserExist(teacher_id))
+            return false;
+        //save pdf
+        PDFHandler.PDFSaveAck ack = PDFHandler.SaveAsPdf(pdfBytes);
+        if (!ack.isSuccess())
+            return false;
+        //add new lesson
+        Lesson lesson=new Lesson(ack.getPath(), ques, teacher_id, headline, cur);
+        //save to DB
+        DBConnection.GetInstance().Save(lesson);
         return true;
     }
 
