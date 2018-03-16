@@ -69,12 +69,23 @@ public class DBConnection extends EyeBase  {
 
     public List<User> getAllUsersForSchool(String schoolName)
     {
-        String query = String.format("SELECT p FROM User p WHERE p.m_school.schoolName=\"%s\"", schoolName);
+        String query = String.format("SELECT p FROM User p WHERE p.m_schoolId=\"%s\"", schoolName);
         List<Object> list = query(query, Student.class);
         List<User> retVal = new ArrayList<>();
         for (Object obj : list)
             retVal.add((User)obj);
         return retVal;
+    }
+
+    public List<SchoolEntity.Class> getAllClassesBySchool(String schoolName)
+    {
+        String query = String.format("SELECT p FROM Class p WHERE p.id LIKE \"%s%%\"", schoolName);
+        List<Object> list = query(query, SchoolEntity.Class.class);
+        List<SchoolEntity.Class> retVal = new ArrayList<>();
+        for (Object obj : list)
+            retVal.add((SchoolEntity.Class)obj);
+        return retVal;
+
     }
 
     public SchoolEntity.Class getClassByName(String name)

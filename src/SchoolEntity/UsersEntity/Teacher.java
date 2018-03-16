@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @Entity
 public class Teacher extends User {
-    public Teacher(long id, String password, School school, String fullName, ArrayList<CommonEnums.Curriculum> curriculum) {
+    public Teacher(long id, String password, String school, String fullName, ArrayList<CommonEnums.Curriculum> curriculum) {
         super(id, password, school, fullName);
         this.curriculum = curriculum;
     }
@@ -20,7 +20,6 @@ public class Teacher extends User {
         return curriculum;
     }
 
-    //@ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = CommonEnums.Curriculum.class)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ArrayList<CommonEnums.Curriculum> curriculum;
 }

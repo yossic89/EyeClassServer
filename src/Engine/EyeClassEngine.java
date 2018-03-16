@@ -37,9 +37,13 @@ public class EyeClassEngine extends EyeBase {
     public boolean AddSchool(School s)
     {
        boolean ret = DBConnection.GetInstance().Save(s);
-        System.out.println(ret + "!!!!!!!!!!");
        if (ret)
-           schoolsMap.put(s.GetName(), new SchoolServer(s));
+       {
+           SchoolServer ss = new SchoolServer(s);
+           ss.initMaps();
+           schoolsMap.put(s.GetName(), ss);
+       }
+
        return ret;
     }
 
