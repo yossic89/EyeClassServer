@@ -1,11 +1,11 @@
 {
-"Debug":{
-"logDir":"C:\\Users\\Mor (Mof Shlus)\\Desktop\\finalProject\\Logs",
-"DebugMode":false
-},
-"OpenCV":{
-"DebugByID":301836334,
-"SamplingInterval":1},
-"Lessons":{
-"PdfStore":"C:\\Users\\Mor (Mof Shlus)\\Desktop\\finalProject\\Files"}
+  "Debug":{
+    "logDir":"D:\\EyeClass\\Logs",
+    "DebugMode":true
+  },
+  "OpenCV":{
+    "DebugByID":301836334,
+    "SamplingInterval":1},
+  "Lessons":{
+    "PdfStore":"D:\\EyeClass\\PDF"}
 }
