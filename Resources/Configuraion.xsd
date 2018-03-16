@@ -7,7 +7,7 @@
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
                                 <xs:attribute type="xs:string" name="logDir"/>
-                                <xs:attribute type="xs:string" name="DebugMode"/>
+                                <xs:attribute type="xs:boolean" name="DebugMode"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -16,8 +16,8 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
-                                <xs:attribute type="xs:short" name="DebugByID"/>
-                                <xs:attribute type="xs:byte" name="SamplingInterval"/>
+                                <xs:attribute type="xs:long" name="DebugByID"/>
+                                <xs:attribute type="xs:integer" name="SamplingInterval"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>

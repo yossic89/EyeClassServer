@@ -37,6 +37,6 @@ public class Class extends EyeBase implements Serializable {
     private String id;
     private CommonEnums.SchoolClasses grade;
     private int grade_id;
-    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Student.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ArrayList<Student> students;
 }

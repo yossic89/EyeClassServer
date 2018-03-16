@@ -26,19 +26,9 @@ public class ConsoleUT {
                 DBConnection.GetInstance().Close();
             }
         }));*/
-        new ConsoleUT().mainMenu();
 
-        /*eng.DeleteDB();
+           new ConsoleUT().mainMenu();
 
-        School sc = new School("ORT", "Holon");
-        Class c = new Class(CommonEnums.SchoolClasses.Grade1, 1, sc);
-        SchoolServer server = new SchoolServer(sc);
-
-        Student st = new Student(301836334, "12345", sc, "Klara Zona",c);
-        System.out.println(c.AddStudent(st));
-        System.out.println(server.AddStuent(st));
-        System.out.println(eng.AddSchool(sc));
-        eng.Close();*/
     }
 
     public ConsoleUT()
@@ -97,6 +87,7 @@ public class ConsoleUT {
 
     private void addLesson()
     {
+        System.out.println(Config.getInstance().getDebug().getLogDir());
         //print all teacher id
         for (User u : server.getAllUsers()) {
             if (u instanceof Teacher) {

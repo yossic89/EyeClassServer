@@ -5,6 +5,7 @@ import SchoolEntity.School;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class Teacher extends User {
         return curriculum;
     }
 
-    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = CommonEnums.Curriculum.class)
+    //@ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = CommonEnums.Curriculum.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ArrayList<CommonEnums.Curriculum> curriculum;
 }

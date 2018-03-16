@@ -36,6 +36,7 @@ public abstract class User extends EyeBase implements Serializable {
     protected long m_id;
     protected String m_password;
     protected String m_fullName;
-    @OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = School.class)
+    //@OneToMany(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = School.class)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     protected School m_school;
 }
