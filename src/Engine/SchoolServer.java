@@ -20,6 +20,7 @@ public class SchoolServer extends EyeBase {
     {
         m_school = school;
         classMap = new HashMap<>();
+        studentsMap = new HashMap<>();
     }
 
     public void initMaps(){
@@ -37,7 +38,7 @@ public class SchoolServer extends EyeBase {
 
     public boolean addClass(Class c)
     {
-        addClassToMap(c);
+        if (!checkIfClassExist(c.getID())) addClassToMap(c);
         boolean addClass = m_school.addClass(c);
         if (addClass)
             return DBConnection.GetInstance().Save(c);
@@ -71,14 +72,21 @@ public class SchoolServer extends EyeBase {
 
     public String getClassName(String classId){
         if (!checkIfClassExist(classId)) return null;
-        Class c = classMap.get(classId);
+        Class c = getClassFromMap(classId);
         return c.GetClassName();
     }
 
     public boolean addStudentToClass(String classId,Student student){
+        //Add student to student maps
+        if (!checkIfStudentExist(student.getM_id())) studentsMap.put(student.getM_id(),student);
+        else return false;
+
+        //check if class exist
         if (!checkIfClassExist(classId)) return false;
-        Class c = classMap.get(classId);
-        if (!c.AddStudent(student)) return false;
+        Class c = getClassFromMap(classId);
+
+        //add student to instance class and to db
+        if (!c.AddStudent(student.getM_id())) return false;
         if (!DBConnection.GetInstance().Save(student)) return false;
         Log("addStudentToClass: The student: "+ student.getM_id() + " added to class: "+classId);
         return true;
@@ -92,7 +100,46 @@ public class SchoolServer extends EyeBase {
         return classMap.get(classId);
     }
 
+    //Users
+    private boolean checkIfStudentExist(long studentId){
+        if (!studentsMap.containsKey(studentId)){
+            return false;
+        }
+        return true;
+    }
+
+    public void addStudentToMap(Student student){
+        studentsMap.put(student.getM_id(),student);
+    }
+
+    public Student getStudentFromMap(long studentId){
+        return studentsMap.get(studentId);
+    }
+
+    public String getPassword(long studentId){
+        if (!checkIfStudentExist(studentId)){
+            Log("getPassword: The student with the id: "+studentId +" is not exist.");
+            return null;
+        }
+        return getStudentFromMap(studentId).getM_password();
+    }
+
+    public String getFullNameOfUser(long studentId){
+        if (!checkIfStudentExist(studentId)){
+            Log("getFullNameOfUser: The student with the id: "+studentId +" is not exist.");
+            return null;
+        }
+        return getStudentFromMap(studentId).getM_fullName();
+    }
+
+    public School getSchoolOfUser(long studentId){
+        if (!checkIfStudentExist(studentId)){
+            Log("getSchoolOfUser: The student with the id: "+studentId +" is not exist.");
+        }
+        return getStudentFromMap(studentId).getM_school();
+    }
 
     private School m_school;
     private HashMap<String, Class> classMap;
+    private HashMap<Long, Student> studentsMap;
 }

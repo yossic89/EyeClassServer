@@ -15,17 +15,17 @@ public class Class extends EyeBase implements Serializable {
     public Class(CommonEnums.SchoolClasses grade, int grade_id, School school){
         this.grade = grade;
         this.grade_id = grade_id;
-        students = new ArrayList<Student>();
+        students = new ArrayList<Long>();
 
         //generate unique id
         this.id = String.format("%s_%s", school.GetName(), this.GetClassName());
     }
 
-    public boolean AddStudent(Student s)
+    public boolean AddStudent(long studentId)
     {
-        if (students.contains(s))
+        if (students.contains(studentId))
             return false;
-        students.add(s);
+        students.add(studentId);
         return true;
     }
 
@@ -38,5 +38,5 @@ public class Class extends EyeBase implements Serializable {
     private CommonEnums.SchoolClasses grade;
     private int grade_id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private ArrayList<Student> students;
+    private ArrayList<Long> students;
 }
