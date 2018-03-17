@@ -1,6 +1,7 @@
 package Engine;
 
 import Infra.EyeBase;
+import LessonManager.Lesson;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.User;
@@ -64,6 +65,16 @@ public class DBConnection extends EyeBase  {
         List<School> retVal = new ArrayList<>();
         for (Object obj : list)
             retVal.add((School) obj);
+        return retVal;
+    }
+
+    public ArrayList<Lesson> getLessonsForTeacher(long id)
+    {
+        String query = String.format("SELECT l FROM Lesson l WHERE l.m_teacher_id=%d", id);
+        List<Object> list = query(query, Lesson.class);
+        ArrayList<Lesson> retVal = new ArrayList<>();
+        for (Object obj : list)
+            retVal.add((Lesson)obj);
         return retVal;
     }
 
