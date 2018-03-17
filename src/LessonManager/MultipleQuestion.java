@@ -33,6 +33,7 @@ public class MultipleQuestion extends EyeBase implements Serializable {
     @Id @GeneratedValue
     private long id;
     String question;
-    String[] allOptions;
     String rightAns;
+    String[] allOptions;
+
 }
