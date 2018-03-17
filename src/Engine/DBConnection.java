@@ -112,11 +112,6 @@ public class DBConnection extends EyeBase  {
         emf.close();
     }
 
-    public boolean IsUserExist(long user_id){
-        String query = String.format("SELECT c FROM User c WHERE c.id=\"%l\"", user_id);
-        return (query(query, User.class).size()==1);
-    }
-
     @Transactional
     public boolean Save(Object obj)
     {
