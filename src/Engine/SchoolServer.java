@@ -15,6 +15,7 @@ import SchoolEntity.UsersEntity.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SchoolServer extends EyeBase {
 
@@ -71,7 +72,8 @@ public class SchoolServer extends EyeBase {
 
     public boolean addTeacher(Teacher t)
     {
-        if (checkIfUserExist(t.getM_id())) {
+        if (!checkIfUserExist(t.getM_id())) usersMap.put(t.getM_id(),t);
+        else{
             Log("addTeacher: The user with Id: "+ t.getM_id() + " is already exist");
             return false;
         }
@@ -131,6 +133,22 @@ public class SchoolServer extends EyeBase {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<Lesson> getAllLessonsForTeacher(long id)
+    {
+        return DBConnection.GetInstance().getLessonsForTeacher(id);
+    }
+
+    public ArrayList<Long> getAllTeacherId()
+    {
+        ArrayList<Long> teachers = new ArrayList<>();
+        for (Map.Entry<Long, User> entry : usersMap.entrySet())
+        {
+            if (entry.getValue() instanceof Teacher)
+                teachers.add(entry.getKey());
+        }
+        return teachers;
     }
 
     public void addStudentToMap(Student student){

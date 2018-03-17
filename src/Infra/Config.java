@@ -7,7 +7,7 @@ import java.io.StringReader;
 
 public class Config {
 
-    private static final String PATH = "config.json";
+    private static String PATH = "config.json";
 
     private static Configuration config = null;
 
@@ -25,4 +25,13 @@ public class Config {
         return config;
     }
 
+    public static void readFromOutsidePath(String p)
+    {
+        try {
+            Gson gson = new Gson();
+            config = gson.fromJson(new FileReader(p), Configuration.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

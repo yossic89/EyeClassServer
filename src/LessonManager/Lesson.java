@@ -20,6 +20,23 @@ public class Lesson extends EyeBase implements Serializable {
         this.m_curriculum = curriculum;
 
     }
+
+    public String get_filePath() {
+        return m_filePath;
+    }
+
+    public ArrayList<MultipleQuestion> get_questions() {
+        return m_questions;
+    }
+
+    public String get_lessonHeadline() {
+        return m_lessonHeadline;
+    }
+
+    public CommonEnums.Curriculum get_curriculum() {
+        return m_curriculum;
+    }
+
     @Id @GeneratedValue
     private long id;
     String m_filePath;
@@ -28,4 +45,5 @@ public class Lesson extends EyeBase implements Serializable {
     long m_teacher_id;
     String m_lessonHeadline;
     CommonEnums.Curriculum m_curriculum;
+
 }

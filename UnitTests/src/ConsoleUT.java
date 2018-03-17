@@ -1,6 +1,7 @@
 import Engine.EyeClassEngine;
 import Engine.SchoolServer;
 import Infra.*;
+import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
@@ -64,6 +65,9 @@ public class ConsoleUT {
                 case 4:
                     addLesson();
                     break;
+                case 5:
+                    showLesson();
+                    break;
                 case 6:
                     System.out.println("BYE!");
                     return;
@@ -94,6 +98,36 @@ public class ConsoleUT {
         }
         MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt);
         return mulq1;
+    }
+
+    private void showLesson()
+    {
+        //get all teachers
+        ArrayList<Long> teachersIdLong = server.getAllTeacherId();
+        ArrayList<String> teacherIdStr = new ArrayList<>();
+        for (long l : teachersIdLong)
+            teacherIdStr.add(Long.toString(l));
+        System.out.println("Select your teacher id");
+        int indx = handleList(teacherIdStr);
+
+        //get all lessons for this teacher
+        ArrayList<Lesson> lessons = server.getAllLessonsForTeacher(teachersIdLong.get(indx));
+        for (Lesson l : lessons)
+        {
+            System.out.println("LESSON:");
+            System.out.println("Headline: " + l.get_lessonHeadline());
+            System.out.println("Lesson pdf store in: " + l.get_filePath());
+            System.out.println("Curriculum: " + l.get_curriculum());
+
+            //print multi ques
+            for (MultipleQuestion q : l.get_questions())
+            {
+                System.out.println("Q: " + q.getQuestionWithAns().getKey());
+                System.out.println("A: " + q.getRightAns());
+                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getValue()));
+            }
+            System.out.println();
+        }
     }
 
     private void addLesson()
