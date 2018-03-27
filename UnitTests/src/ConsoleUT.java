@@ -138,7 +138,7 @@ public class ConsoleUT {
             Scanner scr = new Scanner(System.in);
             System.out.print("How many questions? ");
             ArrayList<MultipleQuestion> allquests=new ArrayList<>();
-            int quest=scr.nextInt();
+            int quest = scr.nextInt();
             for(int i=0; i<quest; i++){
                 MultipleQuestion q1 = createMultipleQuestion();
                 allquests.add(q1);
@@ -148,15 +148,15 @@ public class ConsoleUT {
             //get teacher's information
             System.out.print("Enter your ID: ");
             long id = scr.nextLong();
+            //get teacher's curriculum
+            Teacher t = server.getTeacherFromMap(id);
+            System.out.println("Select only one curriculum id");
+            for (CommonEnums.Curriculum c : (t.getCurriculum()))
+                System.out.print(c.ordinal()+1 +". " + c.name() + ", ");
+            System.out.println();
+            int cur = scr.nextInt();
+            boolean a =server.addLesson(arr, headln, id, CommonEnums.Curriculum.values()[cur-1], allquests);
 
-            //TODO get curriculum
-            boolean a =server.addLesson(arr, headln, id, CommonEnums.Curriculum.Bible, allquests);
-
-            //String[] mop={"yes","no"};
-            //MultipleQuestion q11= new MultipleQuestion("are you a student?", "yes", mop);
-            //ArrayList<MultipleQuestion> alq=new ArrayList<>();
-            //alq.add(q11);
-            //boolean a =server.addLesson(arr, "fileush",123,CommonEnums.Curriculum.Bible, alq);
             System.out.println(a? "Add lesson done" : "Add lesson fail");
 
         }catch (Exception e){
@@ -194,7 +194,7 @@ public class ConsoleUT {
     private ArrayList<CommonEnums.Curriculum> getCurriculum()
     {
         //print
-        System.out.println("Select id, separated by comma");
+        System.out.println("Select curriculum id, separated by comma");
         int i = 1;
         for (CommonEnums.Curriculum c : CommonEnums.Curriculum.values())
         {

@@ -159,6 +159,14 @@ public class SchoolServer extends EyeBase {
         return (Student)usersMap.get(studentId);
     }
 
+    public Teacher getTeacherFromMap(long teacherId){
+        User u=usersMap.get(teacherId);
+        if(u instanceof Teacher)
+            return (Teacher)u;
+        //TODO: not so nice to return null..
+        return null;
+    }
+
     public String getPassword(long studentId){
         if (!checkIfUserExist(studentId)){
             Log("getPassword: The student with the id: "+studentId +" is not exist.");
