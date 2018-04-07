@@ -1,11 +1,23 @@
 package Engine;
 
+import Infra.CommonEnums;
 import Infra.EyeBase;
 import SchoolEntity.School;
+import SchoolEntity.UsersEntity.Admin;
+import SchoolEntity.UsersEntity.Student;
+import SchoolEntity.UsersEntity.Teacher;
+import SchoolEntity.UsersEntity.User;
 
 import java.util.HashMap;
 
 public class EyeClassEngine extends EyeBase {
+
+    public static EyeClassEngine GetInstance()
+    {
+        if (eng == null)
+            eng = new EyeClassEngine();
+        return eng;
+    }
 
     public EyeClassEngine()
     {
@@ -48,7 +60,30 @@ public class EyeClassEngine extends EyeBase {
        return ret;
     }
 
+    public User getUser(long id)
+    {
+        return DBConnection.GetInstance().getUser(id);
+    }
+
+    public CommonEnums.UserTypes GetUserType(long id, String pass)
+    {
+        CommonEnums.UserTypes ret = CommonEnums.UserTypes.NONE;
+        User u = DBConnection.GetInstance().getUser(id, pass);
+        if (u != null)
+        {
+            if (u instanceof Student)
+                ret = CommonEnums.UserTypes.Student;
+            else if (u instanceof Teacher)
+                ret = CommonEnums.UserTypes.Teacher;
+            else if (u instanceof Admin)
+                ret = CommonEnums.UserTypes.Admin;
+        }
+        return ret;
+    }
+
 
     HashMap<String, SchoolServer> schoolsMap;
+
+    private static EyeClassEngine eng;
 
 }

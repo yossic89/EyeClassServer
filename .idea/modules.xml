@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EyeClassServer.iml" filepath="$PROJECT_DIR$/EyeClassServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/UnitTests/UnitTests.iml" filepath="$PROJECT_DIR$/UnitTests/UnitTests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WebController/WebController.iml" filepath="$PROJECT_DIR$/WebController/WebController.iml" />
     </modules>
   </component>
 </project>

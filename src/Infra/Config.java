@@ -7,7 +7,7 @@ import java.io.StringReader;
 
 public class Config {
 
-    private static final String PATH = "config.json";
+    private static final String PATH = "C:\\config.json";
 
     private static Configuration config = null;
 

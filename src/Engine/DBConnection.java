@@ -98,11 +98,32 @@ public class DBConnection extends EyeBase  {
         return retVal;
     }
 
+    public User getUser(long id, String pass)
+    {
+        User retVal = null;
+        String query = String.format("SELECT p FROM User p WHERE p.m_id=%d AND p.m_password=\"%s\"", id, pass);
+        List<Object> list = query(query, SchoolEntity.UsersEntity.User.class);
+        if (list.size()==1)
+            retVal = (User)list.get(0);
+        return retVal;
+    }
+
+    public User getUser(long id)
+    {
+        User retVal = null;
+        String query = String.format("SELECT p FROM User p WHERE p.m_id=%d", id);
+        List<Object> list = query(query, SchoolEntity.UsersEntity.User.class);
+        if (list.size()==1)
+            retVal = (User)list.get(0);
+        return retVal;
+    }
+
     private void initDB()
     {
         emf = Persistence.createEntityManagerFactory("$objectdb/EyeClassDB/ECDB.odb");
         em = emf.createEntityManager();
-        //em.getTransaction().begin();
+        Object location = emf.getProperties().get("objectdb.connection.path");
+        Log("DB location: " + location.toString());
     }
 
     private void Close()

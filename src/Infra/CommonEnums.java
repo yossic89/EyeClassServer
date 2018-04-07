@@ -25,4 +25,20 @@ public class CommonEnums {
         Assembly,
         Bible,
     }
+
+    public enum UserTypes {
+        NONE(0),
+        Admin(1),
+        Teacher(2),
+        Student(3);
+
+        private final int value;
+        private UserTypes(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 }
