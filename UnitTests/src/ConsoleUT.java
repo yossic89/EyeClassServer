@@ -1,18 +1,16 @@
-import Engine.DBConnection;
 import Engine.EyeClassEngine;
 import Engine.SchoolServer;
 import Infra.*;
+import LessonManager.Lesson;
+import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
 
-import java.io.File;
-import java.net.SocketTimeoutException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +32,7 @@ public class ConsoleUT {
         if (tmp == null)
             engine.AddSchool(new School("ORT Eilat", "HaTmarim 12 Eilat"));
         server = engine.getSchoolServer("ORT Eilat");
+        server.initMaps();
 
         Class t = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1);
         if (t == null)
@@ -66,6 +65,9 @@ public class ConsoleUT {
                 case 4:
                     addLesson();
                     break;
+                case 5:
+                    showLesson();
+                    break;
                 case 6:
                     System.out.println("BYE!");
                     return;
@@ -73,28 +75,93 @@ public class ConsoleUT {
             }
         }
     }
+    private MultipleQuestion createMultipleQuestion(){
+        //get question from teacher
+        Scanner scr = new Scanner(System.in);
+        System.out.print("Enter question: ");
+        String q1 = scr.nextLine();
+        System.out.print("Enter correct answer: ");
+        String ans = scr.nextLine();
+        System.out.print("How many false answers? ");
+        int flsans=scr.nextInt();
+        //ArrayList<String> allopt=new ArrayList<>();
+        String[] allopt = new String[flsans+1];
+        allopt[0]=ans;
+        //allopt.add(ans);
+        for(int i=1; i<flsans+1; i++){
+            //get other answers
+            System.out.print("Enter false answer: ");
+            //ans = scr.nextLine();
+            String fls = scr.next();
+            allopt[i] = fls;
+            //allopt.add(ans);
+        }
+        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt);
+        return mulq1;
+    }
+
+    private void showLesson()
+    {
+        //get all teachers
+        ArrayList<Long> teachersIdLong = server.getAllTeacherId();
+        ArrayList<String> teacherIdStr = new ArrayList<>();
+        for (long l : teachersIdLong)
+            teacherIdStr.add(Long.toString(l));
+        System.out.println("Select your teacher id");
+        int indx = handleList(teacherIdStr);
+
+        //get all lessons for this teacher
+        ArrayList<Lesson> lessons = server.getAllLessonsForTeacher(teachersIdLong.get(indx));
+        for (Lesson l : lessons)
+        {
+            System.out.println("LESSON:");
+            System.out.println("Headline: " + l.get_lessonHeadline());
+            System.out.println("Lesson pdf store in: " + l.get_filePath());
+            System.out.println("Curriculum: " + l.get_curriculum());
+
+            //print multi ques
+            for (MultipleQuestion q : l.get_questions())
+            {
+                System.out.println("Q: " + q.getQuestionWithAns().getKey());
+                System.out.println("A: " + q.getRightAns());
+                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getValue()));
+            }
+            System.out.println();
+        }
+    }
 
     private void addLesson()
     {
-        /*System.out.println(Config.getInstance().getDebug().getLogDir());
-        //print all teacher id
-        for (User u : server.getAllUsers()) {
-            if (u instanceof Teacher) {
-                System.out.println("Teacher: " + u.getM_id());
-            }
-        }
-        Scanner scr = new Scanner(System.in);
-        System.out.println("Write your teacher id");
-        long id = scr.nextLong();*/
+        byte[] arr;
         try{
-            byte[] arr =  Files.readAllBytes(Paths.get("Lesson.pdf"));
-            PDFHandler.PDFSaveAck ack = PDFHandler.SaveAsPdf(arr);
-            System.out.println("Save : " + ack.isSuccess() + " Where: " + ack.getPath());
-        }
-        catch (Exception e){
-            System.out.println(e.toString());
-        }
+            arr =  Files.readAllBytes(Paths.get("Lesson.pdf"));
+            Scanner scr = new Scanner(System.in);
+            System.out.print("How many questions? ");
+            ArrayList<MultipleQuestion> allquests=new ArrayList<>();
+            int quest = scr.nextInt();
+            for(int i=0; i<quest; i++){
+                MultipleQuestion q1 = createMultipleQuestion();
+                allquests.add(q1);
+            }
+            System.out.print("File headline: ");
+            String headln = scr.next();
+            //get teacher's information
+            System.out.print("Enter your ID: ");
+            long id = scr.nextLong();
+            //get teacher's curriculum
+            Teacher t = server.getTeacherFromMap(id);
+            System.out.println("Select only one curriculum id");
+            for (CommonEnums.Curriculum c : (t.getCurriculum()))
+                System.out.print(c.ordinal()+1 +". " + c.name() + ", ");
+            System.out.println();
+            int cur = scr.nextInt();
+            boolean a =server.addLesson(arr, headln, id, CommonEnums.Curriculum.values()[cur-1], allquests);
 
+            System.out.println(a? "Add lesson done" : "Add lesson fail");
+
+        }catch (Exception e){
+        System.out.println(e.toString());
+        }
     }
 
     private void addStudent()
@@ -127,7 +194,7 @@ public class ConsoleUT {
     private ArrayList<CommonEnums.Curriculum> getCurriculum()
     {
         //print
-        System.out.println("Select id, separated by comma");
+        System.out.println("Select curriculum id, separated by comma");
         int i = 1;
         for (CommonEnums.Curriculum c : CommonEnums.Curriculum.values())
         {

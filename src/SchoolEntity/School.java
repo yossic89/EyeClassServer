@@ -18,9 +18,9 @@ public class School extends EyeBase {
 
     public boolean addClass(Class c)
     {
-        if (classes.contains(c))
+        if (classes.contains(c.getID()))
             return false;
-        classes.add(c);
+        classes.add(c.getID());
         return true;
     }
 
@@ -31,5 +31,5 @@ public class School extends EyeBase {
     private String address;
     //@ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    ArrayList<Class> classes;
+    ArrayList<String> classes;
 }
