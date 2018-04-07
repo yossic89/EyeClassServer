@@ -80,7 +80,7 @@ public class SchoolServer extends EyeBase {
     public boolean addStudentToClass(String classId,Student student){
         if (!checkIfClassExist(classId)) return false;
         Class c = classMap.get(classId);
-        if (!c.AddStudent(student)) return false;
+        if (!c.AddStudent(student.getM_id())) return false;
         if (!DBConnection.GetInstance().Save(student)) return false;
         Log("addStudentToClass: The student: "+ student.getM_id() + " added to class: "+classId);
         return true;
