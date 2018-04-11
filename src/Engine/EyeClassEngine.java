@@ -80,6 +80,13 @@ public class EyeClassEngine extends EyeBase {
         return ret;
     }
 
+    public void StartLesson(Teacher t, int lesson_id, String class_id)
+    {
+        schoolsMap.get(t.get_schoolId()).startLesson(1, class_id);
+    }
+
+
+
 
     HashMap<String, SchoolServer> schoolsMap;
 

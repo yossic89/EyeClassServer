@@ -4,6 +4,7 @@ import Infra.CommonEnums;
 import Infra.EyeBase;
 import Infra.Logger;
 import Infra.PDFHandler;
+import LessonManager.ActiveLesson;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
@@ -24,6 +25,7 @@ public class SchoolServer extends EyeBase {
         m_school = school;
         classMap = new HashMap<>();
         usersMap = new HashMap<>();
+        m_classesActiveLesson = new HashMap<>();
     }
 
     public void initMaps(){
@@ -181,6 +183,31 @@ public class SchoolServer extends EyeBase {
         return getStudentFromMap(studentId).get_schoolId();
     }
 
+    public void startLesson(int id, String class_id)
+    {
+        //get lesson
+        Lesson l = DBConnection.GetInstance().getLessonById(id);
+        if (l == null)
+        {
+            Log("Lesson with id:"+ id +" is not exists.");
+            return;
+        }
+
+        //Start active lesson
+        if (m_classesActiveLesson.containsKey(class_id))
+        {
+            Log(String.format("Class %s has lesson that deleted", classMap.get(class_id)));
+            m_classesActiveLesson.remove(class_id);
+        }
+
+        Log(String.format("Lesson(%s), id:%d is up", l.get_lessonHeadline(), id));
+        m_classesActiveLesson.put(class_id, new ActiveLesson(l));
+    }
+
+    public boolean CheckIfLessonActive(String class_id) {return m_classesActiveLesson.containsKey(class_id);}
+
+    public byte[] GetLessonPlan(String class_id){return m_classesActiveLesson.get(class_id).getPdfAsBytes();}
+
     public void addClassToMap(Class c){
         classMap.put(c.getID(),c);
     }
@@ -193,4 +220,5 @@ public class SchoolServer extends EyeBase {
     private School m_school;
     private HashMap<String, Class> classMap;
     private HashMap<Long, User> usersMap;
+    private HashMap<String, ActiveLesson> m_classesActiveLesson;
 }
