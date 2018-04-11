@@ -85,7 +85,7 @@ public class EyeClassEngine extends EyeBase {
         schoolsMap.get(t.get_schoolId()).startLesson(1, class_id);
     }
 
-    public byte[] getLessonDataForStudent(Student s){return schoolsMap.get((s.get_schoolId())).GetLessonPlan(s.getStudentClassId());}
+    public byte[] getLessonPlanDataForClass(User u, String class_id){return schoolsMap.get((u.get_schoolId())).GetLessonPlan(class_id);}
 
     HashMap<String, SchoolServer> schoolsMap;
 
