@@ -1,16 +1,11 @@
 package LessonManager;
 
 import Infra.EyeBase;
-import javafx.util.Pair;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Tuple;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 @Entity
 public class MultipleQuestion extends EyeBase implements Serializable {
@@ -24,9 +19,9 @@ public class MultipleQuestion extends EyeBase implements Serializable {
 
     public String getRightAns(){return rightAns;}
 
-    public Pair<String, String[]> getQuestionWithAns()
+    public MultiQueData getQuestionWithAns()
     {
-        return new Pair<>(question, allOptions);
+        return new MultiQueData(question, allOptions);
     }
 
 
@@ -35,5 +30,24 @@ public class MultipleQuestion extends EyeBase implements Serializable {
     String question;
     String rightAns;
     String[] allOptions;
+
+    public class MultiQueData
+    {
+        public MultiQueData(String question, String[] options) {
+            this.question = question;
+            this.options = options;
+        }
+
+        public String getQuestion() {
+            return question;
+        }
+
+        public String[] getOptions() {
+            return options;
+        }
+
+        String question;
+        String[] options;
+    }
 
 }

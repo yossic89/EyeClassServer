@@ -25,4 +25,13 @@ public class Config {
         return config;
     }
 
+    public static void readFromOutsidePath(String p)
+    {
+        try {
+            Gson gson = new Gson();
+            config = gson.fromJson(new FileReader(p), Configuration.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

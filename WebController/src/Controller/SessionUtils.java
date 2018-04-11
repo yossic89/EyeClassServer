@@ -1,6 +1,7 @@
 package Controller;
 
 import Common.Constans;
+import Infra.EyeBase;
 import SchoolEntity.UsersEntity.User;
 
 import javax.servlet.ServletContext;
@@ -46,7 +47,7 @@ public class SessionUtils {
     private static SessionUtils m_obj = null;
     private UsersManager m_manager = null;
 
-    private class UsersManager
+    private class UsersManager extends EyeBase
     {
         public UsersManager()
         {
@@ -57,6 +58,7 @@ public class SessionUtils {
 
         public void addUser(long unique, User u) {
             removePreviousUser(u.getM_id());
+            Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
             users_map.put(unique, u);
         }
 
@@ -73,6 +75,7 @@ public class SessionUtils {
             }
             if (unique > 0)
                 users_map.remove(unique);
+
         }
 
         public void deleteUser(long l) {users_map.remove(l);}

@@ -122,9 +122,9 @@ public class ConsoleUT {
             //print multi ques
             for (MultipleQuestion q : l.get_questions())
             {
-                System.out.println("Q: " + q.getQuestionWithAns().getKey());
+                System.out.println("Q: " + q.getQuestionWithAns().getQuestion());
                 System.out.println("A: " + q.getRightAns());
-                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getValue()));
+                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getOptions()));
             }
             System.out.println();
         }
@@ -134,7 +134,7 @@ public class ConsoleUT {
     {
         byte[] arr;
         try{
-            arr =  Files.readAllBytes(Paths.get("Lesson.pdf"));
+            arr =  Files.readAllBytes(Paths.get("C:\\Lesson.pdf"));
             Scanner scr = new Scanner(System.in);
             System.out.print("How many questions? ");
             ArrayList<MultipleQuestion> allquests=new ArrayList<>();
