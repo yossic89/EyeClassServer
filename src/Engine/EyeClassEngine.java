@@ -15,7 +15,11 @@ public class EyeClassEngine extends EyeBase {
     public static EyeClassEngine GetInstance()
     {
         if (eng == null)
+        {
             eng = new EyeClassEngine();
+            eng.initMap();
+        }
+
         return eng;
     }
 

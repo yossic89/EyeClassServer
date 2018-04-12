@@ -1,9 +1,9 @@
 package Common;
 
 public class Constans {
-    public static final String UNIQUE_ID = "unique";
-    public static final String ID = "id";
-    public static final String PASSWORD = "password";
+    public static  String UNIQUE_ID = "unique";
+    public static  String ID = "id";
+    public static  String PASSWORD = "password";
 
 
     //Teacher Strings
