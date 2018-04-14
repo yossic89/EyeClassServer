@@ -7,8 +7,13 @@ public class Constans {
 
 
     //Teacher Strings
-    public static final String TEACHER_REQ="req";
+    public static final String REQUEST="req";
     public static final String DEMO_LESSON = "demo_lesson";
     public static final String DISPLAY_PDF = "display_pdf";
+    public static final String CLASS_ID = "class_id";
+
+    //Student
+    public static final String ACTIVE_LESSON = "active_lesson";
+    public static final String FINISH_LESSON = "finish_lesson";
 
 }

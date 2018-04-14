@@ -9,6 +9,7 @@ public class ActiveLesson extends Lesson {
     public ActiveLesson(Lesson l)
     {
         super(l.m_filePath, l.m_questions, l.m_teacher_id, l.m_lessonHeadline, l.m_curriculum);
+        m_teacherPage = 0;
     }
 
     public byte[] getPdfAsBytes()
@@ -20,4 +21,14 @@ public class ActiveLesson extends Lesson {
         }
         return null;
     }
+
+    public int getTeacherPage() {
+        return m_teacherPage;
+    }
+
+    public void setTeacherPage(int teacherPage) {
+        this.m_teacherPage = teacherPage;
+    }
+
+    int m_teacherPage;
 }
