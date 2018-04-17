@@ -1,6 +1,7 @@
 package Engine;
 
 import Infra.CommonEnums;
+import Infra.Config;
 import Infra.EyeBase;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Admin;
@@ -15,7 +16,11 @@ public class EyeClassEngine extends EyeBase {
     public static EyeClassEngine GetInstance()
     {
         if (eng == null)
+        {
             eng = new EyeClassEngine();
+            eng.initMap();
+        }
+
         return eng;
     }
 
@@ -86,6 +91,10 @@ public class EyeClassEngine extends EyeBase {
     }
 
     public byte[] getLessonPlanDataForClass(User u, String class_id){return schoolsMap.get((u.get_schoolId())).GetLessonPlan(class_id);}
+
+    public boolean getActiveLessonForStudent(Student s){return schoolsMap.get(s.get_schoolId()).CheckIfLessonActive(s.getStudentClassId());}
+
+    public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingInterval();}
 
     HashMap<String, SchoolServer> schoolsMap;
 

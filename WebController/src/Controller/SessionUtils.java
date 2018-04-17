@@ -58,7 +58,7 @@ public class SessionUtils {
 
         public void addUser(long unique, User u) {
             removePreviousUser(u.getM_id());
-            Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
+           // Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
             users_map.put(unique, u);
         }
 
