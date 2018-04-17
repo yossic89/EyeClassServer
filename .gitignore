@@ -24,3 +24,8 @@
 *.txt
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+out/artifacts/WebController_war_exploded/index.jsp
+out/artifacts/WebController_war_exploded/WEB-INF/web.xml
+out/artifacts/WebController_war_exploded/WEB-INF/lib/objectdb.jar
+out/artifacts/WebController_war_exploded/WEB-INF/lib/gson-2.2.2.jar
+.idea/workspace.xml
