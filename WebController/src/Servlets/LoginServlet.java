@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         }
         //if user exists - add him to Session manager
         if (type != CommonEnums.UserTypes.NONE)
-            SessionUtils.GetInstance().AddUserToSession(getServletContext(), EyeClassEngine.GetInstance().getUser(id));
+            SessionUtils.GetInstance().AddUserToSession(req, EyeClassEngine.GetInstance().getUser(id));
 
         PrintWriter out = resp.getWriter();
         out.print(type.getValue());

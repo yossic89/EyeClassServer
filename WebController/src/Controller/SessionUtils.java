@@ -5,23 +5,28 @@ import Infra.EyeBase;
 import SchoolEntity.UsersEntity.User;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SessionUtils {
 
-    public void AddUserToSession(ServletContext servletContext, User u)
+    public void AddUserToSession(HttpServletRequest request, User u)
     {
         long unique = System.currentTimeMillis();
-        servletContext.setAttribute(Constans.UNIQUE_ID, unique);
+        HttpSession session = request.getSession(true);
+        if (session != null)
+            session.setAttribute(Constans.UNIQUE_ID, unique);
         m_manager.addUser(unique, u);
     }
 
-    public User GetUserFromSession(ServletContext servletContext)
+    public User GetUserFromSession(HttpServletRequest request)
     {
         User retVal = null;
-        if (m_manager.checkIfSessionExists((long)servletContext.getAttribute(Constans.UNIQUE_ID)))
-            retVal = m_manager.getUser((long)servletContext.getAttribute(Constans.UNIQUE_ID));
+        HttpSession session = request.getSession(false);
+        if (m_manager.checkIfSessionExists((long)session.getAttribute(Constans.UNIQUE_ID)))
+            retVal = m_manager.getUser((long)session.getAttribute(Constans.UNIQUE_ID));
         return retVal;
     }
 

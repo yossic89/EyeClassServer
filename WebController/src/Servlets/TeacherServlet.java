@@ -22,7 +22,7 @@ public class TeacherServlet extends HttpServlet {
             throws ServletException, IOException {
 
         switch(req.getParameter(Constans.REQUEST)){
-            case Constans.DEMO_LESSON: doDemoLesson(); break;
+            case Constans.DEMO_LESSON: doDemoLesson(req); break;
             case Constans.DISPLAY_PDF: displayPDF(req, resp); break;
         }
     }
@@ -33,13 +33,13 @@ public class TeacherServlet extends HttpServlet {
         Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
         EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");
     }
-    private void doDemoLesson() throws IOException, ServletException {
-        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(getServletContext());
+    private void doDemoLesson(HttpServletRequest req) throws IOException, ServletException {
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");
     }
 
     private void displayPDF(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(getServletContext());
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         String class_id = req.getParameter(Constans.CLASS_ID);
         byte[] pdf_arr = EyeClassEngine.GetInstance().getLessonPlanDataForClass(t, class_id);
         resp.setContentType("application/pdf");

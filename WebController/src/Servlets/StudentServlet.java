@@ -16,30 +16,29 @@ import java.io.PrintWriter;
 public class StudentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-
         switch(req.getParameter(Constans.REQUEST)){
             case Constans.ACTIVE_LESSON:
-                isActiveLesson(resp);
+                isActiveLesson(req, resp);
                 break;
             case Constans.DISPLAY_PDF:
-                displayPDF(resp);
+                displayPDF(req, resp);
                 break;
             case Constans.FINISH_LESSON:
                 break;
         }
     }
 
-    private void isActiveLesson(HttpServletResponse resp) throws IOException, ServletException
+    private void isActiveLesson(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
     {
-        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(getServletContext());
+        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
         boolean isActive = EyeClassEngine.GetInstance().getActiveLessonForStudent(s);
         PrintWriter out = resp.getWriter();
         out.print(isActive);
     }
 
-    private void displayPDF(HttpServletResponse resp) throws IOException, ServletException
+    private void displayPDF(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
     {
-        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(getServletContext());
+        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
         byte[] pdf_arr = EyeClassEngine.GetInstance().getLessonPlanDataForClass(s, s.getStudentClassId());
         resp.setContentType("application/pdf");
         resp.setHeader("Content-disposition","inline; filename='lesson.pdf'");
@@ -49,9 +48,9 @@ public class StudentServlet extends HttpServlet {
         out.close();
     }
 
-    private void isLessonFinished(HttpServletResponse resp) throws IOException, ServletException
+    private void isLessonFinished(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
     {
-        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(getServletContext());
+        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
         boolean isFinish = !EyeClassEngine.GetInstance().getActiveLessonForStudent(s);
         PrintWriter out = resp.getWriter();
         out.print(isFinish);
