@@ -201,7 +201,20 @@ public class SchoolServer extends EyeBase {
         }
 
         Log(String.format("Lesson(%s), id:%d is up", l.get_lessonHeadline(), id));
-        m_classesActiveLesson.put(class_id, new ActiveLesson(l));
+        m_classesActiveLesson.put(class_id, new ActiveLesson(l, classMap.get(class_id).getStudents()));
+    }
+
+    public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus(String class_id)
+    {
+        Map<Long, CommonEnums.StudentConcentratedStatus> retVal;
+        if (!(m_classesActiveLesson.containsKey(class_id)))
+        {
+            Log("Failed to find active lesson for class: " + class_id);
+            retVal = null;
+        }
+        else
+            retVal = m_classesActiveLesson.get(class_id).getStudentsStatus();
+        return retVal;
     }
 
     public boolean CheckIfLessonActive(String class_id) {return m_classesActiveLesson.containsKey(class_id);}

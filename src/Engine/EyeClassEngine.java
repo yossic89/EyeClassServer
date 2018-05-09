@@ -10,6 +10,7 @@ import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class EyeClassEngine extends EyeBase {
 
@@ -89,6 +90,8 @@ public class EyeClassEngine extends EyeBase {
     {
         schoolsMap.get(t.get_schoolId()).startLesson(1, class_id);
     }
+
+    public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsLessonStatus(User u, String class_id) {return schoolsMap.get(u.get_schoolId()).getStudentsStatus(class_id);}
 
     public byte[] getLessonPlanDataForClass(User u, String class_id){return schoolsMap.get((u.get_schoolId())).GetLessonPlan(class_id);}
 

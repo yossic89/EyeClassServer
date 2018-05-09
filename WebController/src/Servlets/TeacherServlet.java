@@ -6,6 +6,7 @@ import Engine.EyeClassEngine;
 import Infra.CommonEnums;
 import Infra.Config;
 import SchoolEntity.UsersEntity.Teacher;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TeacherServlet extends HttpServlet {
 
@@ -24,6 +27,7 @@ public class TeacherServlet extends HttpServlet {
         switch(req.getParameter(Constans.REQUEST)){
             case Constans.DEMO_LESSON: doDemoLesson(req); break;
             case Constans.DISPLAY_PDF: displayPDF(req, resp); break;
+            case Constans.STUDENTS_STATUS: studentsStatus(req, resp); break;
         }
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -47,6 +51,20 @@ public class TeacherServlet extends HttpServlet {
         resp.setContentLength(pdf_arr.length);
         OutputStream out = resp.getOutputStream();
         out.write(pdf_arr);
+        out.close();
+    }
+
+    private void studentsStatus(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String class_id = req.getParameter(Constans.CLASS_ID);
+        Map<Long, CommonEnums.StudentConcentratedStatus> data = EyeClassEngine.GetInstance().getStudentsLessonStatus(t, class_id);
+        Map<Long, Integer> retVal = new HashMap<>();
+        for (Map.Entry<Long, CommonEnums.StudentConcentratedStatus> entry : data.entrySet())
+        {
+            retVal.put(entry.getKey(), entry.getValue().getValue());
+        }
+        PrintWriter out = resp.getWriter();
+        out.print(new Gson().toJson(data));
         out.close();
     }
 }

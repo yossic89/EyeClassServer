@@ -41,4 +41,19 @@ public class CommonEnums {
             return value;
         }
     }
+
+    public enum StudentConcentratedStatus {
+        Unknown(0),
+        Concentrated(1),
+        NotConcentrated(2);
+
+        private final int value;
+        private StudentConcentratedStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 }

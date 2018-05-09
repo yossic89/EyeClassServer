@@ -29,6 +29,10 @@ public class Class extends EyeBase implements Serializable {
         return true;
     }
 
+    public ArrayList<Long> getStudents() {
+        return students;
+    }
+
     public String getID(){return this.id;}
 
     public String GetClassName(){return grade.name() + "_" + grade_id;}
@@ -39,4 +43,6 @@ public class Class extends EyeBase implements Serializable {
     private int grade_id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ArrayList<Long> students;
+
+
 }
