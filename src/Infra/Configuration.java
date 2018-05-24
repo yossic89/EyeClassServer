@@ -48,11 +48,22 @@ public class Configuration
 
         public void setDebugByID(long DebugByID) { this.DebugByID = DebugByID; }
 
-        private int SamplingInterval;
+        private int SamplingIntervalMS;
 
-        public int getSamplingInterval() { return this.SamplingInterval; }
+        public int getSamplingIntervalMS() { return this.SamplingIntervalMS; }
 
-        public void setSamplingInterval(int SamplingInterval) { this.SamplingInterval = SamplingInterval; }
+        public void setSamplingIntervalMS(int SamplingInterval) { this.SamplingIntervalMS = SamplingInterval; }
+
+        private int MinimumTimeForDistractionReportSec;
+
+        public int getMinimumTimeForDistractionReportSec() {
+            return MinimumTimeForDistractionReportSec;
+        }
+
+        public void setMinimumTimeForDistractionReportSec(int minimumTimeForDistractionReportSec) {
+            MinimumTimeForDistractionReportSec = minimumTimeForDistractionReportSec;
+        }
+
     }
 
     public static class Debug
