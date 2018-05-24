@@ -97,7 +97,7 @@ public class EyeClassEngine extends EyeBase {
 
     public boolean getActiveLessonForStudent(Student s){return schoolsMap.get(s.get_schoolId()).CheckIfLessonActive(s.getStudentClassId());}
 
-    public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingInterval();}
+    public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
 
     HashMap<String, SchoolServer> schoolsMap;
 

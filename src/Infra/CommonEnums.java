@@ -56,4 +56,11 @@ public class CommonEnums {
             return value;
         }
     }
+
+    public enum DistractionType{
+        Page,
+        Looking,
+        All,
+        None,
+    }
 }

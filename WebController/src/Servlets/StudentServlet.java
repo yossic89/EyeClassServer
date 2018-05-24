@@ -3,7 +3,9 @@ package Servlets;
 import Common.Constans;
 import Controller.SessionUtils;
 import Engine.EyeClassEngine;
+import Infra.Config;
 import SchoolEntity.UsersEntity.Student;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +26,9 @@ public class StudentServlet extends HttpServlet {
                 displayPDF(req, resp);
                 break;
             case Constans.FINISH_LESSON:
+                break;
+            case Constans.STUDENT_PARAMETERS:
+                sendParameters(req, resp);
                 break;
         }
     }
@@ -54,5 +59,26 @@ public class StudentServlet extends HttpServlet {
         boolean isFinish = !EyeClassEngine.GetInstance().getActiveLessonForStudent(s);
         PrintWriter out = resp.getWriter();
         out.print(isFinish);
+    }
+
+    private void sendParameters(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
+    {
+        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
+        boolean ifSend = Config.getInstance().getOpenCV().getDebugByID() == s.getM_id();
+        ParamObj ret = new ParamObj(Config.getInstance().getOpenCV().getSamplingIntervalMS(), ifSend);
+        PrintWriter out = resp.getWriter();
+        out.print(new Gson().toJson(ret));
+    }
+
+    public class ParamObj
+    {
+        public ParamObj(int sample, boolean ifSend)
+        {
+            this.ifSendPhoto = ifSend;
+            this.photoSampling = sample;
+        }
+
+        private int photoSampling;
+        private boolean ifSendPhoto;
     }
 }
