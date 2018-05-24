@@ -204,16 +204,21 @@ public class SchoolServer extends EyeBase {
         m_classesActiveLesson.put(class_id, new ActiveLesson(l, classMap.get(class_id).getStudents()));
     }
 
-    public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus(String class_id)
+    public Map<String, CommonEnums.StudentConcentratedStatus> getStudentsStatus(String class_id)
     {
-        Map<Long, CommonEnums.StudentConcentratedStatus> retVal;
+        Map<String, CommonEnums.StudentConcentratedStatus> retVal = new HashMap<>();
         if (!(m_classesActiveLesson.containsKey(class_id)))
         {
             Log("Failed to find active lesson for class: " + class_id);
-            retVal = null;
         }
         else
-            retVal = m_classesActiveLesson.get(class_id).getStudentsStatus();
+        {
+            Map<Long, CommonEnums.StudentConcentratedStatus> data = m_classesActiveLesson.get(class_id).getStudentsStatus();
+            for (Map.Entry<Long, CommonEnums.StudentConcentratedStatus> entry : data.entrySet())
+            {
+                retVal.put(usersMap.get(entry.getKey()).getM_fullName(), entry.getValue());
+            }
+        }
         return retVal;
     }
 

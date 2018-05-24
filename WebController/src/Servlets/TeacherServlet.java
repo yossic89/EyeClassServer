@@ -57,9 +57,9 @@ public class TeacherServlet extends HttpServlet {
     private void studentsStatus(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         String class_id = req.getParameter(Constans.CLASS_ID);
-        Map<Long, CommonEnums.StudentConcentratedStatus> data = EyeClassEngine.GetInstance().getStudentsLessonStatus(t, class_id);
-        Map<Long, Integer> retVal = new HashMap<>();
-        for (Map.Entry<Long, CommonEnums.StudentConcentratedStatus> entry : data.entrySet())
+        Map<String, CommonEnums.StudentConcentratedStatus> data = EyeClassEngine.GetInstance().getStudentsLessonStatus(t, class_id);
+        Map<String, Integer> retVal = new HashMap<>();
+        for (Map.Entry<String, CommonEnums.StudentConcentratedStatus> entry : data.entrySet())
         {
             retVal.put(entry.getKey(), entry.getValue().getValue());
         }
