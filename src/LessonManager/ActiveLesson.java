@@ -1,5 +1,7 @@
 package LessonManager;
 
+import Distractions.DistractionReport;
+import Distractions.MeasureParams;
 import Infra.CommonEnums;
 
 import java.io.IOException;
@@ -15,6 +17,7 @@ public class ActiveLesson extends Lesson {
     {
         super(l.m_filePath, l.m_questions, l.m_teacher_id, l.m_lessonHeadline, l.m_curriculum);
         m_teacherPage = 0;
+        m_distraction = new DistractionReport(id);
         initLesson(students);
     }
 
@@ -35,6 +38,24 @@ public class ActiveLesson extends Lesson {
         return null;
     }
 
+    public void handleMeasureParam(MeasureParams measure)
+    {
+        m_distraction.handleMeasure(measure, m_teacherPage);
+
+        //update map
+        if (!m_studentsStatus.containsKey(measure.getStudent_id()))
+            Log("Unable to find studnet id " + measure.getStudent_id() +" for lesson id: " + id);
+        else
+        {
+            CommonEnums.DistractionType type = m_distraction.getStudentStatus(measure.getStudent_id());
+            if (type == CommonEnums.DistractionType.None)
+                m_studentsStatus.put(measure.getStudent_id(), CommonEnums.StudentConcentratedStatus.Concentrated);
+            else
+                m_studentsStatus.put(measure.getStudent_id(), CommonEnums.StudentConcentratedStatus.NotConcentrated);
+        }
+
+    }
+
     public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus() { return m_studentsStatus;}
 
     public int getTeacherPage() {
@@ -47,4 +68,5 @@ public class ActiveLesson extends Lesson {
 
     int m_teacherPage;
     Map<Long, CommonEnums.StudentConcentratedStatus> m_studentsStatus;
+    DistractionReport m_distraction;
 }

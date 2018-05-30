@@ -41,7 +41,7 @@ public class Lesson extends EyeBase implements Serializable {
     }
 
     @Id @GeneratedValue
-    private long id;
+    protected long id;
     String m_filePath;
     ArrayList<MultipleQuestion> m_questions;
     long m_teacher_id;

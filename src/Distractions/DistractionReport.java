@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class DistractionReport {
 
-    public DistractionReport(int lesson_id)
+    public DistractionReport(long lesson_id)
     {
         this.lesson_id = lesson_id;
         studentsDistractions = new HashMap<>();
@@ -24,6 +24,10 @@ public class DistractionReport {
             addDistraction(type, measure.getStudent_id());
         else
             handleLastDistraction(measure.getStudent_id());
+
+        //show image if has one
+        if (measure.getPhoto_arr() != null)
+            ImageViewer.showImage(measure.getPhoto_arr());
     }
 
     private void handleLastDistraction(long student_id)
@@ -77,6 +81,19 @@ public class DistractionReport {
             return CommonEnums.DistractionType.None;
     }
 
-    private int lesson_id;
+    public CommonEnums.DistractionType getStudentStatus(long id)
+    {
+        CommonEnums.DistractionType retVal = CommonEnums.DistractionType.None;
+        if (studentsDistractions.containsKey(id) )
+        {
+            //validate
+            DistractionParam param = studentsDistractions.get(id).get(studentsDistractions.get(id).size() - 1);
+            if (param.isActive() && param.getDistractionDuration() >= Config.getInstance().getOpenCV().getMinimumTimeForDistractionReportSec())
+                retVal = param.getType();
+        }
+        return retVal;
+    }
+
+    private long lesson_id;
     Map<Long, List<DistractionParam>> studentsDistractions;
 }
