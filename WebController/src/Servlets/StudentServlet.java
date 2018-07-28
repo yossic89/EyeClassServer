@@ -2,18 +2,23 @@ package Servlets;
 
 import Common.Constans;
 import Controller.SessionUtils;
+import Distractions.ImageViewer;
 import Engine.EyeClassEngine;
 import Infra.Config;
 import SchoolEntity.UsersEntity.Student;
 import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+
 
 public class StudentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -29,6 +34,9 @@ public class StudentServlet extends HttpServlet {
                 break;
             case Constans.STUDENT_PARAMETERS:
                 sendParameters(req, resp);
+                break;
+            case Constans.MEASURE:
+                getMeasureData(req, resp);
                 break;
         }
     }
@@ -61,7 +69,15 @@ public class StudentServlet extends HttpServlet {
         out.print(isFinish);
     }
 
-    private void sendParameters(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
+    private void getMeasureData(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        Gson g = new Gson();
+        deviationData d = g.fromJson(req.getParameter("data"), deviationData.class);
+
+
+
+    }
+
+        private void sendParameters(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
     {
         Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
         boolean ifSend = Config.getInstance().getOpenCV().getDebugByID() == s.getM_id();
@@ -80,5 +96,35 @@ public class StudentServlet extends HttpServlet {
 
         private int photoSampling;
         private boolean ifSendPhoto;
+    }
+
+    public class deviationData
+    {
+        public deviationData(int _eyes, byte[] _photo)
+        {
+            eyes_count = _eyes;
+            photo = _photo;
+        }
+
+        public void setPage_num(int page_num) {
+            this.page_num = page_num;
+        }
+
+        public byte[] getPhoto() {
+            return photo;
+        }
+
+        public int getPage_num() {
+            return page_num;
+        }
+
+        public int getEyes_count() {
+            return eyes_count;
+        }
+
+        byte[] photo;
+        int page_num;
+        int eyes_count;
+
     }
 }
