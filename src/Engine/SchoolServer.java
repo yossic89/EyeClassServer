@@ -1,5 +1,6 @@
 package Engine;
 
+import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.EyeBase;
 import Infra.Logger;
@@ -220,6 +221,14 @@ public class SchoolServer extends EyeBase {
             }
         }
         return retVal;
+    }
+
+    public void handleMeasureParamForStudent(String studentClassId, MeasureParams param)
+    {
+        if (m_classesActiveLesson.containsKey(studentClassId))
+            m_classesActiveLesson.get(studentClassId).handleMeasureParam(param);
+        else
+            Log("Unable ro find class_id: " + studentClassId);
     }
 
     public boolean CheckIfLessonActive(String class_id) {return m_classesActiveLesson.containsKey(class_id);}

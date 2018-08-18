@@ -1,5 +1,6 @@
 package Engine;
 
+import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.Config;
 import Infra.EyeBase;
@@ -96,6 +97,8 @@ public class EyeClassEngine extends EyeBase {
     public byte[] getLessonPlanDataForClass(User u, String class_id){return schoolsMap.get((u.get_schoolId())).GetLessonPlan(class_id);}
 
     public boolean getActiveLessonForStudent(Student s){return schoolsMap.get(s.get_schoolId()).CheckIfLessonActive(s.getStudentClassId());}
+
+    public void handleStudentMeasuring(Student s, MeasureParams params){schoolsMap.get(s.get_schoolId()).handleMeasureParamForStudent(s.getStudentClassId(), params);}
 
     public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
 

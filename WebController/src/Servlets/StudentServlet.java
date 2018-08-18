@@ -3,6 +3,7 @@ package Servlets;
 import Common.Constans;
 import Controller.SessionUtils;
 import Distractions.ImageViewer;
+import Distractions.MeasureParams;
 import Engine.EyeClassEngine;
 import Infra.Config;
 import SchoolEntity.UsersEntity.Student;
@@ -31,6 +32,7 @@ public class StudentServlet extends HttpServlet {
                 displayPDF(req, resp);
                 break;
             case Constans.FINISH_LESSON:
+                isLessonFinished(req, resp);
                 break;
             case Constans.STUDENT_PARAMETERS:
                 sendParameters(req, resp);
@@ -70,11 +72,11 @@ public class StudentServlet extends HttpServlet {
     }
 
     private void getMeasureData(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
         Gson g = new Gson();
         deviationData d = g.fromJson(req.getParameter("data"), deviationData.class);
-
-
-
+        MeasureParams param = new MeasureParams(s.getM_id(), d.getPage_num(), d.getEyes_count(), d.getPhoto());
+        EyeClassEngine.GetInstance().handleStudentMeasuring(s, param);
     }
 
         private void sendParameters(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException

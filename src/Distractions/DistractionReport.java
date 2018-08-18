@@ -2,13 +2,15 @@ package Distractions;
 
 import Infra.CommonEnums;
 import Infra.Config;
+import Infra.EyeBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DistractionReport {
+
+public class DistractionReport extends EyeBase {
 
     public DistractionReport(long lesson_id)
     {
@@ -24,7 +26,8 @@ public class DistractionReport {
             addDistraction(type, measure.getStudent_id());
         else
             handleLastDistraction(measure.getStudent_id());
-
+        Log(String.format("handleMeasure for student id [%d], eyes count [%d], student page [%d]. teacher page [%d], STATUS: [%s]"
+        , measure.getStudent_id(), measure.getEyes_count(), measure.getPage(), teacherPage, type.toString()));
         //show image if has one
         if (measure.getPhoto_arr() != null)
             ImageViewer.showImage(measure.getPhoto_arr());
