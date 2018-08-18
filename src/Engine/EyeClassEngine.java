@@ -100,6 +100,8 @@ public class EyeClassEngine extends EyeBase {
 
     public void handleStudentMeasuring(Student s, MeasureParams params){schoolsMap.get(s.get_schoolId()).handleMeasureParamForStudent(s.getStudentClassId(), params);}
 
+    public void setTeacherPageForLesson(Teacher t, String class_id, int page){schoolsMap.get(t.get_schoolId()).setTeacherPageForLesson(class_id, page);}
+
     public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
 
     HashMap<String, SchoolServer> schoolsMap;

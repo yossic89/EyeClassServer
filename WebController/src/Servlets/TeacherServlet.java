@@ -24,12 +24,22 @@ public class TeacherServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        switch(req.getParameter(Constans.REQUEST)){
-            case Constans.DEMO_LESSON: doDemoLesson(req); break;
-            case Constans.DISPLAY_PDF: displayPDF(req, resp); break;
-            case Constans.STUDENTS_STATUS: studentsStatus(req, resp); break;
+        switch (req.getParameter(Constans.REQUEST)) {
+            case Constans.DEMO_LESSON:
+                doDemoLesson(req);
+                break;
+            case Constans.DISPLAY_PDF:
+                displayPDF(req, resp);
+                break;
+            case Constans.STUDENTS_STATUS:
+                studentsStatus(req, resp);
+                break;
+            case Constans.PAGE_UPDATE:
+                setTeacherPage(req);
+                break;
         }
     }
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -37,6 +47,14 @@ public class TeacherServlet extends HttpServlet {
         Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
         EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");
     }
+
+    private void setTeacherPage(HttpServletRequest req) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String class_id = req.getParameter(Constans.CLASS_ID);
+        int page = Integer.parseInt(req.getParameter("page"));
+        EyeClassEngine.GetInstance().setTeacherPageForLesson(t, class_id, page);
+    }
+
     private void doDemoLesson(HttpServletRequest req) throws IOException, ServletException {
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");

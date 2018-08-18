@@ -64,6 +64,7 @@ public class ActiveLesson extends Lesson {
 
     public void setTeacherPage(int teacherPage) {
         this.m_teacherPage = teacherPage;
+        Log(String.format("Active Lesson [%s] teacher page set to [%d]", m_lessonHeadline, this.m_teacherPage));
     }
 
     int m_teacherPage;
