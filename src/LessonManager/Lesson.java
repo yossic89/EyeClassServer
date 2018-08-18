@@ -5,9 +5,7 @@ import Infra.EyeBase;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Teacher;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -43,6 +41,7 @@ public class Lesson extends EyeBase implements Serializable {
     @Id @GeneratedValue
     protected long id;
     String m_filePath;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     ArrayList<MultipleQuestion> m_questions;
     long m_teacher_id;
     String m_lessonHeadline;
