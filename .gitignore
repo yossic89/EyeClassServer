@@ -29,3 +29,6 @@ out/artifacts/WebController_war_exploded/WEB-INF/web.xml
 out/artifacts/WebController_war_exploded/WEB-INF/lib/objectdb.jar
 out/artifacts/WebController_war_exploded/WEB-INF/lib/gson-2.2.2.jar
 .idea/workspace.xml
+out/artifacts/EyeClassServer_jar/config.json
+out/production/UnitTests/META-INF/MANIFEST.MF
+UnitTests/src/META-INF/MANIFEST.MF
