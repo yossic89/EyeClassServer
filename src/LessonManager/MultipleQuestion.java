@@ -15,6 +15,7 @@ public class MultipleQuestion extends EyeBase implements Serializable {
         this.question = q;
         this.rightAns = rightAns;
         this.allOptions = options;
+        this.topic = "THIS IS TOPIC!NEED TO CHANGE";
     }
 
     public String getRightAns(){return rightAns;}
@@ -24,12 +25,16 @@ public class MultipleQuestion extends EyeBase implements Serializable {
         return new MultiQueData(question, allOptions);
     }
 
+    public void setTopic(int i){this.topic = "THIS IS TOPIC!NEED TO CHANGE: "+i;}
+
 
     @Id @GeneratedValue
     private long id;
     String question;
     String rightAns;
     String[] allOptions;
+    String topic;
+
 
     public class MultiQueData
     {

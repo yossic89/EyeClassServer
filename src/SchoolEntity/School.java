@@ -18,7 +18,7 @@ public class School extends EyeBase {
 
     public boolean addClass(Class c)
     {
-        if (classes.contains(c.getID()))
+       if (classes.contains(c.getID()))
             return false;
         classes.add(c.getID());
         return true;
