@@ -26,9 +26,6 @@ public class Lesson extends EyeBase implements Serializable {
         return m_filePath;
     }
 
-    public ArrayList<MultipleQuestion> get_questions() {
-        return m_questions;
-    }
 
     public String get_lessonHeadline() {
         return m_lessonHeadline;
@@ -36,6 +33,10 @@ public class Lesson extends EyeBase implements Serializable {
 
     public CommonEnums.Curriculum get_curriculum() {
         return m_curriculum;
+    }
+
+    public ArrayList<MultipleQuestion> getM_questions(){
+        return m_questions;
     }
 
     @Id @GeneratedValue

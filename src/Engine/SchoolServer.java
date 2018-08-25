@@ -245,6 +245,14 @@ public class SchoolServer extends EyeBase {
         return classMap.get(classId);
     }
 
+    public ArrayList<MultipleQuestion> getLessonQuestions(String class_id){
+        if (!(m_classesActiveLesson.containsKey(class_id)))
+        {
+            Log("Failed to find active lesson for class: " + class_id);
+        }
+        return m_classesActiveLesson.get(class_id).get_questions();
+    }
+
 
     private School m_school;
     private HashMap<String, Class> classMap;

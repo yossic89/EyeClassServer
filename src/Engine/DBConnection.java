@@ -74,7 +74,10 @@ public class DBConnection extends EyeBase  {
         List<Object> obj = query(queryStr, Lesson.class);
         if (obj.size() == 0)
             return null;
-        return (Lesson)obj.get(0);
+        ArrayList<Lesson> retVal = new ArrayList<>();
+        for (Object o : obj)
+            retVal.add((Lesson)o);
+        return retVal.get(0);
     }
 
     public ArrayList<Lesson> getLessonsForTeacher(long id)

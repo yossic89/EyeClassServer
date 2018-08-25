@@ -7,6 +7,7 @@ import Infra.CommonEnums;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class ActiveLesson extends Lesson {
         super(l.m_filePath, l.m_questions, l.m_teacher_id, l.m_lessonHeadline, l.m_curriculum);
         m_teacherPage = 0;
         m_distraction = new DistractionReport(id);
+        m_questions = l.m_questions;
         initLesson(students);
     }
 
@@ -58,6 +60,10 @@ public class ActiveLesson extends Lesson {
 
     public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus() { return m_studentsStatus;}
 
+    public ArrayList<MultipleQuestion> get_questions() {
+        return m_questions;
+    }
+
     public int getTeacherPage() {
         return m_teacherPage;
     }
@@ -70,4 +76,5 @@ public class ActiveLesson extends Lesson {
     int m_teacherPage;
     Map<Long, CommonEnums.StudentConcentratedStatus> m_studentsStatus;
     DistractionReport m_distraction;
+    ArrayList<MultipleQuestion> m_questions;
 }

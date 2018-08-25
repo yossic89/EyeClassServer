@@ -13,6 +13,7 @@ public class Constans {
     public static final String CLASS_ID = "class_id";
     public static final String STUDENTS_STATUS = "students_status";
     public static final String PAGE_UPDATE = "teacher_page";
+    public static final String QUESTIONS_LESSON = "questions_lesson";
 
     //Student
     public static final String ACTIVE_LESSON = "active_lesson";

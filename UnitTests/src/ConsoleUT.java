@@ -83,7 +83,7 @@ public class ConsoleUT {
         System.out.print("Enter correct answer: ");
         String ans = scr.nextLine();
         System.out.print("How many false answers? ");
-        int flsans=scr.nextInt();
+        int flsans=Integer.valueOf(scr.nextLine());
         //ArrayList<String> allopt=new ArrayList<>();
         String[] allopt = new String[flsans+1];
         allopt[0]=ans;
@@ -92,7 +92,7 @@ public class ConsoleUT {
             //get other answers
             System.out.print("Enter false answer: ");
             //ans = scr.nextLine();
-            String fls = scr.next();
+            String fls = scr.nextLine();
             allopt[i] = fls;
             //allopt.add(ans);
         }
@@ -120,12 +120,12 @@ public class ConsoleUT {
             System.out.println("Curriculum: " + l.get_curriculum());
 
             //print multi ques
-            for (MultipleQuestion q : l.get_questions())
-            {
-                System.out.println("Q: " + q.getQuestionWithAns().getQuestion());
-                System.out.println("A: " + q.getRightAns());
-                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getOptions()));
-            }
+//            for (MultipleQuestion q : l.get_questions())
+//            {
+//                System.out.println("Q: " + q.getQuestionWithAns().getQuestion());
+//                System.out.println("A: " + q.getRightAns());
+//                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getOptions()));
+//            }
             System.out.println();
         }
     }

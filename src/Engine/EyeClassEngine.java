@@ -4,12 +4,14 @@ import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.Config;
 import Infra.EyeBase;
+import LessonManager.MultipleQuestion;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +91,7 @@ public class EyeClassEngine extends EyeBase {
 
     public void StartLesson(Teacher t, int lesson_id, String class_id)
     {
-        schoolsMap.get(t.get_schoolId()).startLesson(1, class_id);
+        schoolsMap.get(t.get_schoolId()).startLesson(lesson_id, class_id);
     }
 
     public Map<String, CommonEnums.StudentConcentratedStatus> getStudentsLessonStatus(User u, String class_id) {return schoolsMap.get(u.get_schoolId()).getStudentsStatus(class_id);}
@@ -103,6 +105,9 @@ public class EyeClassEngine extends EyeBase {
     public void setTeacherPageForLesson(Teacher t, String class_id, int page){schoolsMap.get(t.get_schoolId()).setTeacherPageForLesson(class_id, page);}
 
     public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
+
+    public ArrayList<MultipleQuestion> getQuestionsForClass(User u, String class_id){ return schoolsMap.get((u.get_schoolId())).getLessonQuestions(class_id);}
+
 
     HashMap<String, SchoolServer> schoolsMap;
 

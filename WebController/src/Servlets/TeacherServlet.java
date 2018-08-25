@@ -5,6 +5,7 @@ import Controller.SessionUtils;
 import Engine.EyeClassEngine;
 import Infra.CommonEnums;
 import Infra.Config;
+import LessonManager.MultipleQuestion;
 import SchoolEntity.UsersEntity.Teacher;
 import com.google.gson.Gson;
 
@@ -37,6 +38,8 @@ public class TeacherServlet extends HttpServlet {
             case Constans.PAGE_UPDATE:
                 setTeacherPage(req);
                 break;
+            case Constans.QUESTIONS_LESSON: questionLesson(req, resp);
+            break;
         }
     }
 
@@ -81,6 +84,21 @@ public class TeacherServlet extends HttpServlet {
         {
             retVal.put(entry.getKey(), entry.getValue().getValue());
         }
+        PrintWriter out = resp.getWriter();
+        out.print(new Gson().toJson(data));
+        out.close();
+    }
+
+    private void questionLesson(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String class_id = req.getParameter(Constans.CLASS_ID);
+        ArrayList<MultipleQuestion> data = EyeClassEngine.GetInstance().getQuestionsForClass(t, class_id);
+
+        //// need to delete after we are adding topic to the DB
+        int i=1;
+        for(MultipleQuestion m:data) {m.setTopic(i);i++;}
+
+        ////
         PrintWriter out = resp.getWriter();
         out.print(new Gson().toJson(data));
         out.close();
