@@ -34,9 +34,14 @@ public class QuestionsDeliveryServlet extends HttpServlet {
         else if (req.getParameter("action").equals("get")){
             Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
             String questionData = EyeClassEngine.GetInstance().getQuestionDataOfActiveLesson(s);
-            System.out.println("$$$$ " +questionData);
             PrintWriter out = resp.getWriter();
             out.print(questionData);
+        }
+        if (req.getParameter("action").equals("clear")) {
+            String class_id = req.getParameter(Constans.CLASS_ID);
+            String questionData = null;
+            Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+            EyeClassEngine.GetInstance().setQuestionDataForDelivery(t, class_id, questionData);
         }
     }
 }
