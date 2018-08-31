@@ -2,19 +2,21 @@ package Distractions;
 
 import Infra.CommonEnums;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class DistractionParam {
-    private CommonEnums.DistractionType type;
-    private Date start;
-    private Date end;
-    private boolean isActive;
+@Entity
+public class DistractionParam implements Serializable {
 
-    public DistractionParam(CommonEnums.DistractionType type){
+
+    public DistractionParam(CommonEnums.DistractionType type, long student, long lesson){
         this.type = type;
         isActive = true;
         end = new Date(System.currentTimeMillis());
         start = end;
+        student_id = student;
+        lesson_id = lesson;
     }
 
     public void setActive(boolean active) {
@@ -39,6 +41,15 @@ public class DistractionParam {
         int duration = (int)(d1-d2)/1000;
         return duration;
     }
+
+    @Id @GeneratedValue
+    private String id;
+    private CommonEnums.DistractionType type;
+    private Date start;
+    private Date end;
+    private boolean isActive;
+    private long student_id;
+    private long lesson_id;
 }
 
 
