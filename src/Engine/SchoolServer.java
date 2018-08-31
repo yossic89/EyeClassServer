@@ -233,7 +233,11 @@ public class SchoolServer extends EyeBase {
 
     public void setTeacherPageForLesson(String class_id, int page){m_classesActiveLesson.get(class_id).setTeacherPage(page);}
 
+    public void setQuestionDataForDelivery(String class_id, String questionData){m_classesActiveLesson.get(class_id).setQuestionDataForDeliver(questionData);}
+
     public boolean CheckIfLessonActive(String class_id) {return m_classesActiveLesson.containsKey(class_id);}
+
+    public String getQuestionDataOfActiveLesson(String class_id) {return m_classesActiveLesson.get(class_id).getQuestionData();}
 
     public byte[] GetLessonPlan(String class_id){return m_classesActiveLesson.get(class_id).getPdfAsBytes();}
 

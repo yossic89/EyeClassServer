@@ -104,6 +104,10 @@ public class EyeClassEngine extends EyeBase {
 
     public void setTeacherPageForLesson(Teacher t, String class_id, int page){schoolsMap.get(t.get_schoolId()).setTeacherPageForLesson(class_id, page);}
 
+    public void setQuestionDataForDelivery(Teacher t, String class_id, String questionData){schoolsMap.get(t.get_schoolId()).setQuestionDataForDelivery(class_id,questionData);}
+
+    public String getQuestionDataOfActiveLesson(Student s){return schoolsMap.get(s.get_schoolId()).getQuestionDataOfActiveLesson(s.getStudentClassId());}
+
     public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
 
     public ArrayList<MultipleQuestion> getQuestionsForClass(User u, String class_id){ return schoolsMap.get((u.get_schoolId())).getLessonQuestions(class_id);}

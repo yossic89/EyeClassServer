@@ -73,6 +73,15 @@ public class ActiveLesson extends Lesson {
         Log(String.format("Active Lesson [%s] teacher page set to [%d]", m_lessonHeadline, this.m_teacherPage));
     }
 
+    public String getQuestionData() {
+        return questionData;
+    }
+
+    public void setQuestionDataForDeliver(String questionData) {
+        this.questionData = questionData;
+    }
+    private String questionData;
+
     int m_teacherPage;
     Map<Long, CommonEnums.StudentConcentratedStatus> m_studentsStatus;
     DistractionReport m_distraction;

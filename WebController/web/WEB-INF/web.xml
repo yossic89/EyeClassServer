@@ -33,4 +33,14 @@
         <servlet-name>StudentServlet</servlet-name>
         <url-pattern>/student</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QuestionsDeliveryServlet</servlet-name>
+        <servlet-class>Servlets.QuestionsDeliveryServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>QuestionsDeliveryServlet</servlet-name>
+        <url-pattern>/questionsDeliveryServlet</url-pattern>
+    </servlet-mapping>
 </web-app>
