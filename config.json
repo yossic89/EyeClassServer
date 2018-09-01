@@ -1,12 +1,14 @@
 {
+  "Database":{
+    "DBPath":"D:\\EyeClass\\DB\\ECDB.odb"},
   "Debug":{
     "logDir":"D:\\EyeClass\\Logs",
     "DebugMode":true
   },
   "OpenCV":{
     "DebugByID":301836334,
-    "SamplingIntervalMS":1000,
-    "MinimumTimeForDistractionReportSec":3},
+    "SamplingIntervalMS":1500,
+    "MinimumTimeForDistractionReportSec":5},
   "Lessons":{
     "PdfStore":"D:\\EyeClass\\PDF"}
 }

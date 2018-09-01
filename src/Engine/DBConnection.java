@@ -1,5 +1,8 @@
 package Engine;
 
+import Distractions.DistractionParam;
+import Infra.CommonEnums;
+import Infra.Config;
 import Infra.EyeBase;
 import LessonManager.Lesson;
 import SchoolEntity.School;
@@ -16,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DBConnection extends EyeBase  {
 
@@ -31,6 +35,7 @@ public class DBConnection extends EyeBase  {
 
     private DBConnection()
     {
+        dbOpen = false;
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -38,6 +43,7 @@ public class DBConnection extends EyeBase  {
             }
         });
     }
+
     public void RestartDB()
     {
         Object location = emf.getProperties().get("objectdb.connection.path");
@@ -143,17 +149,29 @@ public class DBConnection extends EyeBase  {
 
     private void initDB()
     {
-        emf = Persistence.createEntityManagerFactory("$objectdb/EyeClassDB/ECDB.odb");
+        emf = Persistence.createEntityManagerFactory(Config.getInstance().getDatabase().getDBPath());
         em = emf.createEntityManager();
         Object location = emf.getProperties().get("objectdb.connection.path");
         Log("DB location: " + location.toString());
+        dbOpen = true;
     }
 
-    private void Close()
+    public void Close()
     {
-        //em.getTransaction().commit();
-        em.close();
-        emf.close();
+        if (dbOpen) {
+            try
+            {
+                em.close();
+                emf.close();
+                dbOpen = false;
+            }
+            catch (Exception e)
+            {
+                System.out.println("FAILED TO SAVE");
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Transactional
@@ -171,7 +189,7 @@ public class DBConnection extends EyeBase  {
 
     private static DBConnection m_db = null;
     EntityManager em;
-
     EntityManagerFactory emf;
+    private boolean dbOpen;
 
 }

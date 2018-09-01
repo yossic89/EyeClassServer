@@ -33,4 +33,8 @@
         <servlet-name>StudentServlet</servlet-name>
         <url-pattern>/student</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>Controller.ContextListener</listener-class>
+    </listener>
 </web-app>
