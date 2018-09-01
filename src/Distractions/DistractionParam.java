@@ -1,13 +1,14 @@
 package Distractions;
 
 import Infra.CommonEnums;
+import Infra.EyeBase;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class DistractionParam implements Serializable {
+public class DistractionParam extends EyeBase implements Serializable {
 
 
     public DistractionParam(CommonEnums.DistractionType type, long student, long lesson){
@@ -43,7 +44,7 @@ public class DistractionParam implements Serializable {
     }
 
     @Id @GeneratedValue
-    private String id;
+    protected long id;
     private CommonEnums.DistractionType type;
     private Date start;
     private Date end;

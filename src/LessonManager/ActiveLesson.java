@@ -17,6 +17,7 @@ public class ActiveLesson extends Lesson {
     public ActiveLesson(Lesson l, List<Long> students)
     {
         super(l.m_filePath, l.m_questions, l.m_teacher_id, l.m_lessonHeadline, l.m_curriculum);
+        id = l.id;
         m_teacherPage = 0;
         m_distraction = new DistractionReport(id);
         m_questions = l.m_questions;

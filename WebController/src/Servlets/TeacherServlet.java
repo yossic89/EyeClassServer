@@ -53,7 +53,7 @@ public class TeacherServlet extends HttpServlet {
         String param = req.getParameter("status");
         if (param.contains("start"))
         {
-            System.out.println("YOSSI DEBUG - Start");
+            System.out.println("DEBUG MODE - Start");
             ArrayList<CommonEnums.Curriculum> a = new ArrayList<>();
             Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
             EyeClassEngine.GetInstance().StartLesson(t, 5, "ORT Eilat_Grade11_1");
@@ -61,7 +61,7 @@ public class TeacherServlet extends HttpServlet {
 
         if (param.contains("end"))
         {
-            System.out.println("YOSSI DEBUG - End");
+            System.out.println("DEBUG MODE - End");
             ArrayList<CommonEnums.Curriculum> a = new ArrayList<>();
             Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
             EyeClassEngine.GetInstance().endLesson(t, "ORT Eilat_Grade11_1");
