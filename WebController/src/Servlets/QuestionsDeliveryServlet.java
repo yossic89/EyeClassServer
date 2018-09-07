@@ -50,7 +50,9 @@ public class QuestionsDeliveryServlet extends HttpServlet {
 
     private void doGetAction(HttpServletRequest req, HttpServletResponse resp){
         Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
-        String questionData = EyeClassEngine.GetInstance().getQuestionDataOfActiveLesson(s);
+        String questionData = null;
+        try{questionData = EyeClassEngine.GetInstance().getQuestionDataOfActiveLesson(s);}
+        catch (Exception e){}
         PrintWriter out = null;
         try {
             out = resp.getWriter();
