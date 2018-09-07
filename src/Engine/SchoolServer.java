@@ -231,6 +231,10 @@ public class SchoolServer extends EyeBase {
             Log("Unable ro find class_id: " + studentClassId);
     }
 
+    public long getTeacherIdByClass(String class_id) {return m_classesActiveLesson.get(class_id).getTeacherId();}
+
+    public long getLessonIdByClass(String class_id) {return m_classesActiveLesson.get(class_id).getLessonId();}
+
     public void setTeacherPageForLesson(String class_id, int page){m_classesActiveLesson.get(class_id).setTeacherPage(page);}
 
     public void setQuestionDataForDelivery(String class_id, String questionData){m_classesActiveLesson.get(class_id).setQuestionDataForDeliver(questionData);}

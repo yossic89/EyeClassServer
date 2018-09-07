@@ -22,4 +22,11 @@ public class Constans {
     public static final String STUDENT_PARAMETERS = "student_measure_params";//time to take photo & if to send photo bytes
     public static final String MEASURE = "measure_data";
 
+    //Questions
+    public static final String QUESTION = "question";
+    public static final String QUESTION_ID = "question_id";
+    public static final String IS_GOOD_ANSWER = "is_good_answer";
+    public static final String STUDENT_ANSWER = "student_answer";
+
+
 }

@@ -56,7 +56,7 @@ public class TeacherServlet extends HttpServlet {
             System.out.println("DEBUG MODE - Start");
             ArrayList<CommonEnums.Curriculum> a = new ArrayList<>();
             Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
-            EyeClassEngine.GetInstance().StartLesson(t, 5, "ORT Eilat_Grade11_1");
+            EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");
         }
 
         if (param.contains("end"))
@@ -83,7 +83,7 @@ public class TeacherServlet extends HttpServlet {
 
     private void doDemoLesson(HttpServletRequest req) throws IOException, ServletException {
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
-        EyeClassEngine.GetInstance().StartLesson(t, 5, "ORT Eilat_Grade11_1");
+        EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");
     }
 
     private void displayPDF(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

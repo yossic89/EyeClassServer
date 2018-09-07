@@ -5,6 +5,7 @@ import Infra.CommonEnums;
 import Infra.Config;
 import Infra.EyeBase;
 import LessonManager.MultipleQuestion;
+import LessonManager.QuestionStatisticForStudent;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
@@ -19,6 +20,7 @@ public class EyeClassEngine extends EyeBase {
 
     public static EyeClassEngine GetInstance()
     {
+
         if (eng == null)
         {
             eng = new EyeClassEngine();
@@ -100,6 +102,10 @@ public class EyeClassEngine extends EyeBase {
 
     public boolean getActiveLessonForStudent(Student s){return schoolsMap.get(s.get_schoolId()).CheckIfLessonActive(s.getStudentClassId());}
 
+    public long getTeacherIdOfActiveLessonByStudent(Student s){return schoolsMap.get(s.get_schoolId()).getTeacherIdByClass(s.getStudentClassId());}
+
+    public long getLessonIdOfActiveLessonByStudent(Student s){return schoolsMap.get(s.get_schoolId()).getLessonIdByClass(s.getStudentClassId());}
+
     public void handleStudentMeasuring(Student s, MeasureParams params){schoolsMap.get(s.get_schoolId()).handleMeasureParamForStudent(s.getStudentClassId(), params);}
 
     public void setTeacherPageForLesson(Teacher t, String class_id, int page){schoolsMap.get(t.get_schoolId()).setTeacherPageForLesson(class_id, page);}
@@ -111,6 +117,16 @@ public class EyeClassEngine extends EyeBase {
     public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
 
     public void endLesson(Teacher t, String class_id){schoolsMap.get(t.get_schoolId()).endLesson(class_id);}
+
+    public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId ){
+        long studId = s.getM_id();
+        long lessonId = getLessonIdOfActiveLessonByStudent(s);
+        long teacherId = getTeacherIdOfActiveLessonByStudent(s);
+        QuestionStatisticForStudent questionStatisticForStudent = new QuestionStatisticForStudent(studId, lessonId, teacherId, questionId, question, isGoodAns, studAns);
+        Log(String.format("Student with id: %d answer: %s " ,studId ,isGoodAns));
+        if (!DBConnection.GetInstance().Save(questionStatisticForStudent))
+            System.out.println("Can't save question statistic of student to db");
+    }
 
     public ArrayList<MultipleQuestion> getQuestionsForClass(User u, String class_id){ return schoolsMap.get((u.get_schoolId())).getLessonQuestions(class_id);}
 

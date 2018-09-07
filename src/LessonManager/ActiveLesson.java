@@ -83,6 +83,10 @@ public class ActiveLesson extends Lesson {
         return questionData;
     }
 
+    public long getTeacherId(){return  m_teacher_id;}
+
+    public long getLessonId(){return id;}
+
     public void setQuestionDataForDeliver(String questionData) {
         this.questionData = questionData;
     }
