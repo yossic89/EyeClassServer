@@ -10,12 +10,12 @@ import java.io.Serializable;
 @Entity
 public class MultipleQuestion extends EyeBase implements Serializable {
 
-    public MultipleQuestion(String q, String rightAns, String[] options)
+    public MultipleQuestion(String q, String rightAns, String[] options,String topic)
     {
         this.question = q;
         this.rightAns = rightAns;
         this.allOptions = options;
-        this.topic = "THIS IS TOPIC!NEED TO CHANGE";
+        this.topic = topic;
     }
 
     public String getRightAns(){return rightAns;}
@@ -25,7 +25,7 @@ public class MultipleQuestion extends EyeBase implements Serializable {
         return new MultiQueData(question, allOptions);
     }
 
-    public void setTopic(int i){this.topic = "THIS IS TOPIC!NEED TO CHANGE: "+i;}
+    public void setTopic(String topic){this.topic =topic;}
 
 
     @Id @GeneratedValue

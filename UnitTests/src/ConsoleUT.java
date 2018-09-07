@@ -80,6 +80,8 @@ public class ConsoleUT {
         Scanner scr = new Scanner(System.in);
         System.out.print("Enter question: ");
         String q1 = scr.nextLine();
+        System.out.print("Enter topic: ");
+        String topic = scr.nextLine();
         System.out.print("Enter correct answer: ");
         String ans = scr.nextLine();
         System.out.print("How many false answers? ");
@@ -96,7 +98,7 @@ public class ConsoleUT {
             allopt[i] = fls;
             //allopt.add(ans);
         }
-        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt);
+        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt,topic);
         return mulq1;
     }
 

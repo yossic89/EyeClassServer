@@ -116,12 +116,6 @@ public class TeacherServlet extends HttpServlet {
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         String class_id = req.getParameter(Constans.CLASS_ID);
         ArrayList<MultipleQuestion> data = EyeClassEngine.GetInstance().getQuestionsForClass(t, class_id);
-
-        //// need to delete after we are adding topic to the DB
-        int i=1;
-        for(MultipleQuestion m:data) {m.setTopic(i);i++;}
-
-        ////
         PrintWriter out = resp.getWriter();
         out.print(new Gson().toJson(data));
         out.close();
