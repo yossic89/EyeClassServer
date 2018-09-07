@@ -17,6 +17,7 @@ public class ActiveLesson extends Lesson {
     public ActiveLesson(Lesson l, List<Long> students)
     {
         super(l.m_filePath, l.m_questions, l.m_teacher_id, l.m_lessonHeadline, l.m_curriculum);
+        id = l.id;
         m_teacherPage = 0;
         m_distraction = new DistractionReport(id);
         m_questions = l.m_questions;
@@ -58,19 +59,29 @@ public class ActiveLesson extends Lesson {
 
     }
 
-    public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus() { return m_studentsStatus;}
+    private void studentStatusDebug()
+    {
+        for (Map.Entry<Long, CommonEnums.StudentConcentratedStatus> iter : m_studentsStatus.entrySet())
+            Log(String.format("id [%d] status [%s]", iter.getKey(), iter.getValue().toString()));
+    }
+
+    public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus() {
+        studentStatusDebug();
+        return m_studentsStatus;
+    }
 
     public ArrayList<MultipleQuestion> get_questions() {
         return m_questions;
     }
 
-    public int getTeacherPage() {
-        return m_teacherPage;
-    }
-
     public void setTeacherPage(int teacherPage) {
         this.m_teacherPage = teacherPage;
         Log(String.format("Active Lesson [%s] teacher page set to [%d]", m_lessonHeadline, this.m_teacherPage));
+    }
+
+    public void endLesson()
+    {
+        m_distraction.closeLesson();
     }
 
     int m_teacherPage;

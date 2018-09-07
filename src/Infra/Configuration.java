@@ -31,6 +31,16 @@ public class Configuration
 
     public void setLessons(Lessons Lessons) { this.Lessons = Lessons; }
 
+    private Database Database;
+
+    public Database getDatabase() {
+        return Database;
+    }
+
+    public void setDatabase(Database database) {
+        Database = database;
+    }
+
     public static class Lessons
     {
         private String PdfStore;
@@ -38,6 +48,19 @@ public class Configuration
         public String getPdfStore() { return this.PdfStore; }
 
         public void setPdfStore(String PdfStore) { this.PdfStore = PdfStore; }
+    }
+
+    public static class Database
+    {
+        private String DBPath;
+
+        public String getDBPath() {
+            return DBPath;
+        }
+
+        public void setDBPath(String DBPath) {
+            this.DBPath = DBPath;
+        }
     }
 
     public static class OpenCV

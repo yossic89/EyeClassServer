@@ -1,5 +1,6 @@
 package Distractions;
 
+import Engine.DBConnection;
 import Infra.CommonEnums;
 import Infra.Config;
 import Infra.EyeBase;
@@ -38,6 +39,9 @@ public class DistractionReport extends EyeBase {
         if (studentsDistractions.containsKey(student_id))
         {
             DistractionParam students_district = studentsDistractions.get(student_id).get(studentsDistractions.get(student_id).size() - 1);
+            //this distraction is not active any more
+            students_district.setActive(false);
+            //remove if this districtaion is less than the minimum from config
             if (students_district.getDistractionDuration() < Config.getInstance().getOpenCV().getMinimumTimeForDistractionReportSec())
                 studentsDistractions.get(student_id).remove(students_district);
         }
@@ -45,30 +49,31 @@ public class DistractionReport extends EyeBase {
 
     private void addDistraction(CommonEnums.DistractionType type, long student_id)
     {
+        //first time for student distration
         if (!studentsDistractions.containsKey(student_id))
         {
             studentsDistractions.put(student_id, new ArrayList<>());
-            studentsDistractions.get(student_id).add(new DistractionParam(type));
+            studentsDistractions.get(student_id).add(new DistractionParam(type, student_id, lesson_id));
         }
         else
         {
             DistractionParam students_district = studentsDistractions.get(student_id).get(studentsDistractions.get(student_id).size() - 1);
             //if there is active distraction
-
             if (students_district.isActive())
             {
+                //increse time
                 if (type == students_district.getType())
                     students_district.updateEndTime();
+                //close the last districation and open new one
                 else
                 {
-                    students_district.setActive(false);
-                    //handleLastDistraction(student_id);//keep it - for intergration
-                    studentsDistractions.get(student_id).add(new DistractionParam(type));
+                    handleLastDistraction(student_id);
+                    studentsDistractions.get(student_id).add(new DistractionParam(type, student_id, lesson_id));
                 }
             }
             //add new one
             else
-                studentsDistractions.get(student_id).add(new DistractionParam(type));
+                studentsDistractions.get(student_id).add(new DistractionParam(type, student_id, lesson_id));
         }
     }
 
@@ -97,6 +102,30 @@ public class DistractionReport extends EyeBase {
         return retVal;
     }
 
+    public void closeLesson()
+    {
+        //handle last districation
+        for(long id : studentsDistractions.keySet())
+            handleLastDistraction(id);
+        //save in DB
+        saveDistractions();
+    }
+
+    private void saveDistractions()
+    {
+        for (Map.Entry<Long, List<DistractionParam>> iter : studentsDistractions.entrySet())
+        {
+            for(DistractionParam param : iter.getValue())
+            {
+                if (!DBConnection.GetInstance().Save(param))
+                    Log(String.format("Failed to update DistractionParam for id [%d]", iter.getKey()));
+            }
+        }
+
+    }
+
     private long lesson_id;
+    private String school_id;
+    private long teacher_id;
     Map<Long, List<DistractionParam>> studentsDistractions;
 }
