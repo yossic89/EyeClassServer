@@ -249,6 +249,18 @@ public class SchoolServer extends EyeBase {
         return classMap.get(classId);
     }
 
+    public void endLesson(String class_id)
+    {
+        if (m_classesActiveLesson.containsKey(class_id))
+        {
+            m_classesActiveLesson.get(class_id).endLesson();
+            m_classesActiveLesson.remove(class_id);
+            Log(String.format("Lesson for class [%s] is down", class_id));
+        }
+        else
+            Log(String.format("Lesson for class [%s] not found", class_id));
+    }
+
     public ArrayList<MultipleQuestion> getLessonQuestions(String class_id){
         if (!(m_classesActiveLesson.containsKey(class_id)))
         {
