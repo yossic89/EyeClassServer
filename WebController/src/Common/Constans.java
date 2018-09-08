@@ -15,6 +15,8 @@ public class Constans {
     public static final String PAGE_UPDATE = "teacher_page";
     public static final String QUESTIONS_LESSON = "questions_lesson";
     public static final String END_LESSON = "end_lesson";
+    public static final String START_LESSON = "start_lesson";
+    public static final String LESSON_ID = "lesson_id";
 
     //Student
     public static final String ACTIVE_LESSON = "active_lesson";

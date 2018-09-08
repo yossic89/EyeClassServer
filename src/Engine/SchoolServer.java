@@ -184,7 +184,7 @@ public class SchoolServer extends EyeBase {
         return getStudentFromMap(studentId).get_schoolId();
     }
 
-    public void startLesson(int id, String class_id)
+    public void startLesson(long id, String class_id)
     {
         //get lesson
         Lesson l = DBConnection.GetInstance().getLessonById(id);

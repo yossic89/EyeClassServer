@@ -74,7 +74,7 @@ public class DBConnection extends EyeBase  {
         return retVal;
     }
 
-    public Lesson getLessonById(int id)
+    public Lesson getLessonById(long id)
     {
         String queryStr = String.format("SELECT l FROM Lesson l WHERE l.id=%d", id);
         List<Object> obj = query(queryStr, Lesson.class);

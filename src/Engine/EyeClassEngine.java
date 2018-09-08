@@ -91,7 +91,7 @@ public class EyeClassEngine extends EyeBase {
         return ret;
     }
 
-    public void StartLesson(Teacher t, int lesson_id, String class_id)
+    public void StartLesson(Teacher t, long lesson_id, String class_id)
     {
         schoolsMap.get(t.get_schoolId()).startLesson(lesson_id, class_id);
     }
