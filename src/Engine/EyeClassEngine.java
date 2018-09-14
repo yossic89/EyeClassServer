@@ -1,11 +1,14 @@
 package Engine;
 
+import Distractions.DistractionParam;
 import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.Config;
 import Infra.EyeBase;
+import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import LessonManager.QuestionStatisticForStudent;
+import SchoolEntity.Class;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
@@ -14,6 +17,7 @@ import SchoolEntity.UsersEntity.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EyeClassEngine extends EyeBase {
@@ -91,10 +95,12 @@ public class EyeClassEngine extends EyeBase {
         return ret;
     }
 
-    public void StartLesson(Teacher t, int lesson_id, String class_id)
+    public void StartLesson(Teacher t, long lesson_id, String class_id)
     {
         schoolsMap.get(t.get_schoolId()).startLesson(lesson_id, class_id);
     }
+
+    public ArrayList<Lesson> getAllLessonsForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getAllLessonsForTeacher(t.getM_id());}
 
     public Map<String, CommonEnums.StudentConcentratedStatus> getStudentsLessonStatus(User u, String class_id) {return schoolsMap.get(u.get_schoolId()).getStudentsStatus(class_id);}
 
@@ -117,6 +123,10 @@ public class EyeClassEngine extends EyeBase {
     public int getPhotoSampling(){return Config.getInstance().getOpenCV().getSamplingIntervalMS();}
 
     public void endLesson(Teacher t, String class_id){schoolsMap.get(t.get_schoolId()).endLesson(class_id);}
+
+    public List<Class> getAllClasses(User u){return schoolsMap.get(u.get_schoolId()).getAllClasses();}
+
+    public List<DistractionParam> getDistractionForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getDistractionForTeacher(t.getM_id());}
 
     public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId ){
         long studId = s.getM_id();

@@ -74,7 +74,7 @@ public class DBConnection extends EyeBase  {
         return retVal;
     }
 
-    public Lesson getLessonById(int id)
+    public Lesson getLessonById(long id)
     {
         String queryStr = String.format("SELECT l FROM Lesson l WHERE l.id=%d", id);
         List<Object> obj = query(queryStr, Lesson.class);
@@ -115,6 +115,16 @@ public class DBConnection extends EyeBase  {
             retVal.add((SchoolEntity.Class)obj);
         return retVal;
 
+    }
+
+    public List<DistractionParam> getDistractionForTeacher(long teacher_id)
+    {
+        String query = String.format("SELECT d FROM DistractionParam d, Lesson l WHERE l.id=d.lesson_id AND l.m_teacher_id=%d", teacher_id);
+        List<Object> list = query(query, DistractionParam.class);
+        ArrayList<DistractionParam> retVal = new ArrayList<>();
+        for (Object obj : list)
+            retVal.add((DistractionParam)obj);
+        return retVal;
     }
 
     public SchoolEntity.Class getClassByName(String name)
