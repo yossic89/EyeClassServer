@@ -59,6 +59,9 @@ public class TeacherServlet extends HttpServlet {
             case Constans.CLASSES:
                 getClassesMap(req, resp);
                 break;
+            case Constans.TEACHER_CURRICULUM:
+                getCurriculumList(req, resp);
+                break;
         }
     }
 
@@ -88,6 +91,13 @@ public class TeacherServlet extends HttpServlet {
         List<DistractionParam> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
         PrintWriter out = resp.getWriter();
         out.print(new Gson().toJson(distractions));
+        out.close();
+    }
+
+    private void getCurriculumList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        PrintWriter out = resp.getWriter();
+        out.print(new Gson().toJson(t.getCurriculum()));
         out.close();
     }
 

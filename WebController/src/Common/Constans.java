@@ -20,6 +20,7 @@ public class Constans {
     public static final String TEACHER_LESSON_SELECT = "lesson_select";
     public static final String TEACHER_DISTRACTIONS = "lesson_distractions";
     public static final String CLASSES = "classes";
+    public static final String TEACHER_CURRICULUM = "curriculum";
 
     //Student
     public static final String ACTIVE_LESSON = "active_lesson";
