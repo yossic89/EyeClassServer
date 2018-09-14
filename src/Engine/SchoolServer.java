@@ -1,5 +1,6 @@
 package Engine;
 
+import Distractions.DistractionParam;
 import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.EyeBase;
@@ -38,6 +39,12 @@ public class SchoolServer extends EyeBase {
         for (SchoolEntity.UsersEntity.User user : DBConnection.GetInstance().getAllUsersForSchool(m_school.GetName()))
             usersMap.put(user.getM_id(), user);
     }
+
+    public List<SchoolEntity.Class> getAllClasses() {
+        return DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName());
+    }
+
+    public List<DistractionParam> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
 
     public School getSchool(){return m_school;}
 

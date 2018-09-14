@@ -117,6 +117,16 @@ public class DBConnection extends EyeBase  {
 
     }
 
+    public List<DistractionParam> getDistractionForTeacher(long teacher_id)
+    {
+        String query = String.format("SELECT d FROM DistractionParam d, Lesson l WHERE l.id=d.lesson_id AND l.m_teacher_id=%d", teacher_id);
+        List<Object> list = query(query, DistractionParam.class);
+        ArrayList<DistractionParam> retVal = new ArrayList<>();
+        for (Object obj : list)
+            retVal.add((DistractionParam)obj);
+        return retVal;
+    }
+
     public SchoolEntity.Class getClassByName(String name)
     {
         SchoolEntity.Class retVal = null;
