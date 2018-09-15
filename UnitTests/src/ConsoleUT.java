@@ -98,7 +98,7 @@ public class ConsoleUT {
             allopt[i] = fls;
             //allopt.add(ans);
         }
-        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt,topic);
+        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt,topic, 30);
         return mulq1;
     }
 

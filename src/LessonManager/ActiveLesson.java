@@ -17,6 +17,7 @@ public class ActiveLesson extends Lesson {
     public ActiveLesson(Lesson l, List<Long> students)
     {
         super(l.m_filePath, l.m_questions, l.m_teacher_id, l.m_lessonHeadline, l.m_curriculum);
+        collectData = true;
         id = l.id;
         m_teacherPage = 0;
         m_distraction = new DistractionReport(id);
@@ -43,6 +44,8 @@ public class ActiveLesson extends Lesson {
 
     public void handleMeasureParam(MeasureParams measure)
     {
+        if (!collectData)
+            return;
         m_distraction.handleMeasure(measure, m_teacherPage);
 
         //update map
@@ -79,6 +82,24 @@ public class ActiveLesson extends Lesson {
         Log(String.format("Active Lesson [%s] teacher page set to [%d]", m_lessonHeadline, this.m_teacherPage));
     }
 
+    public void setCollectData(boolean toCollect)
+    {
+        collectData = toCollect;
+        //restart status to unkown and close open
+        if (!collectData)
+        {
+            //close opens
+            m_distraction.closeAllDistrations();
+
+            //update all to unkown
+            for(long id : m_studentsStatus.keySet())
+            {
+                m_studentsStatus.put(id, CommonEnums.StudentConcentratedStatus.Unknown);
+            }
+
+        }
+    }
+
     public String getQuestionData() {
         return questionData;
     }
@@ -101,4 +122,5 @@ public class ActiveLesson extends Lesson {
     Map<Long, CommonEnums.StudentConcentratedStatus> m_studentsStatus;
     DistractionReport m_distraction;
     ArrayList<MultipleQuestion> m_questions;
+    boolean collectData;
 }
