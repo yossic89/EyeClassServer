@@ -85,6 +85,7 @@ public class ActiveLesson extends Lesson {
     public void setCollectData(boolean toCollect)
     {
         collectData = toCollect;
+        Log(String.format("Collect data to lesson [%s] is set to [%s]", m_lessonHeadline, collectData));
         //restart status to unkown and close open
         if (!collectData)
         {

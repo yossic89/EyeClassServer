@@ -64,6 +64,9 @@ public class TeacherServlet extends HttpServlet {
             case Constans.UPLOAD_LESSON:
                 uploadLesson(req, resp);
                 break;
+            case Constans.TRACKER:
+                setTracker(req);
+                break;
         }
     }
 
@@ -134,6 +137,13 @@ public class TeacherServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.print(result);
         out.close();
+    }
+
+    private void setTracker(HttpServletRequest req) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String class_id = req.getParameter(Constans.CLASS_ID);
+        boolean toTrack = Boolean.valueOf(req.getParameter("track"));
+        EyeClassEngine.GetInstance().setTracker(t, class_id, toTrack);
     }
 
     private void getCurriculumList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{

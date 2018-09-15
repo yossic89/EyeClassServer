@@ -129,6 +129,8 @@ public class EyeClassEngine extends EyeBase {
         return schoolsMap.get(t.get_schoolId()).addLesson(pdfBytes, headline, t.getM_id(), cur, ques);
     }
 
+    public void setTracker(Teacher t, String class_id, boolean track){schoolsMap.get(t.get_schoolId()).setTrackerForClass(class_id, track);}
+
     public List<Class> getAllClasses(User u){return schoolsMap.get(u.get_schoolId()).getAllClasses();}
 
     public List<DistractionParam> getDistractionForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getDistractionForTeacher(t.getM_id());}

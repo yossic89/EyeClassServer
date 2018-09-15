@@ -22,6 +22,7 @@ public class Constans {
     public static final String CLASSES = "classes";
     public static final String TEACHER_CURRICULUM = "curriculum";
     public static final String UPLOAD_LESSON = "upload_lesson";
+    public static final String TRACKER = "tracker";
 
     //Student
     public static final String ACTIVE_LESSON = "active_lesson";
