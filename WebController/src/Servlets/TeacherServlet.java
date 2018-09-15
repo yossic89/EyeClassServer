@@ -9,19 +9,18 @@ import Infra.Config;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.UsersEntity.Teacher;
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLOutput;
+import java.util.*;
 
 public class TeacherServlet extends HttpServlet {
 
@@ -62,7 +61,18 @@ public class TeacherServlet extends HttpServlet {
             case Constans.TEACHER_CURRICULUM:
                 getCurriculumList(req, resp);
                 break;
+            case Constans.UPLOAD_LESSON:
+                uploadLesson(req, resp);
+                break;
+            case Constans.TRACKER:
+                setTracker(req);
+                break;
         }
+    }
+
+    private String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -92,6 +102,48 @@ public class TeacherServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.print(new Gson().toJson(distractions));
         out.close();
+    }
+
+    private void uploadLesson(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String data = req.getParameter("data");
+        boolean result = true;
+        try
+        {
+            JsonObject jObj = new JsonParser().parse(data).getAsJsonObject();
+            String headline = jObj.get("mTitle").getAsString();
+            CommonEnums.Curriculum curriculum = CommonEnums.Curriculum.valueOf(jObj.get("mCurr").getAsString());
+            JsonArray pdfArr = jObj.get("lessonFile").getAsJsonArray();
+            byte[] pdfFile = new byte[pdfArr.size()];
+            for (int i = 0; i < pdfArr.size(); i++)
+                pdfFile[i] = pdfArr.get(i).getAsByte();
+            //check if there is questions
+            ArrayList<MultipleQuestion> questions = new ArrayList<>();
+            if (jObj.get("questions") != null)
+            {
+                JsonArray questionsJsonArr = jObj.get("questions").getAsJsonArray();
+                Gson gson = new Gson();
+                for (JsonElement jEle : questionsJsonArr)
+                    questions.add(gson.fromJson(jEle.toString(), MultipleQuestion.class));
+            }
+            result = EyeClassEngine.GetInstance().addLesson(t, pdfFile, headline, curriculum, questions);
+
+        }
+        catch (Exception e){
+            result = false;
+            System.out.println(e);
+        }
+
+        PrintWriter out = resp.getWriter();
+        out.print(result);
+        out.close();
+    }
+
+    private void setTracker(HttpServletRequest req) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String class_id = req.getParameter(Constans.CLASS_ID);
+        boolean toTrack = Boolean.valueOf(req.getParameter("track"));
+        EyeClassEngine.GetInstance().setTracker(t, class_id, toTrack);
     }
 
     private void getCurriculumList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{

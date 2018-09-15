@@ -64,6 +64,11 @@ public class SchoolServer extends EyeBase {
         return true;
     }
 
+    public void setTrackerForClass(String class_id, boolean toTrack)
+    {
+        m_classesActiveLesson.get(class_id).setCollectData(toTrack);
+    }
+
     public boolean addClass(Class c)
     {
         if (!checkIfClassExist(c.getID())) addClassToMap(c);
