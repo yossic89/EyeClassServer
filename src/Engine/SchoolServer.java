@@ -301,6 +301,15 @@ public class SchoolServer extends EyeBase {
         return classMap.get(classId);
     }
 
+    public void endAllLessons()
+    {
+        for (String class_id : m_classesActiveLesson.keySet())
+        {
+            m_classesActiveLesson.get(class_id).endLesson();
+        }
+        m_classesActiveLesson.clear();
+    }
+
     public void endLesson(String class_id)
     {
         if (m_classesActiveLesson.containsKey(class_id))
@@ -320,6 +329,8 @@ public class SchoolServer extends EyeBase {
         }
         return m_classesActiveLesson.get(class_id).get_questions();
     }
+
+    public int getTeacherPageForLesson(String class_id){return m_classesActiveLesson.get(class_id).getTeacherPage();}
 
 
     private School m_school;

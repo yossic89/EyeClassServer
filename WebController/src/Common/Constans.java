@@ -29,6 +29,7 @@ public class Constans {
     public static final String FINISH_LESSON = "finish_lesson";
     public static final String STUDENT_PARAMETERS = "student_measure_params";//time to take photo & if to send photo bytes
     public static final String MEASURE = "measure_data";
+    public static final String TEACHER_PAGE = "teacher_page";
 
     //Questions
     public static final String QUESTION = "question";
