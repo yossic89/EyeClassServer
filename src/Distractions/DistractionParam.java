@@ -56,11 +56,15 @@ public class DistractionParam extends EyeBase implements Serializable {
 
     public String getDurationAsStr()
     {
-        long d1 = end.getTime();
-        long d2 = start.getTime();
-        int duration = (int)(d1-d2);
-        DateFormat df = new SimpleDateFormat("HH:mm:ss");
-        return df.format(duration);
+        int duration = getDistractionDuration();
+        int minutes = duration / 60;
+        int seconds = duration % 60;
+        String retVal = "";
+        if (minutes > 0)
+            retVal = String.format("%d min %d sec", minutes, seconds);
+        else
+            retVal = String.format("%d sec", seconds);
+        return  retVal;
     }
 
     public CommonEnums.DistractionType getDistrationType(){return this.type;}
@@ -73,29 +77,6 @@ public class DistractionParam extends EyeBase implements Serializable {
     private boolean isActive;
     private long student_id;
     private long lesson_id;
-
-    public static class DistractionParamViewModel{
-
-        private String id;
-        private String name;
-        private String _class;
-        private String date;
-        private String curriculum;
-        private String type;
-        private String duration;
-
-        public DistractionParamViewModel(String id, String name, String _class, String date, String curriculum, String type, String duration) {
-            this.id = id;
-            this.name = name;
-            this._class = _class;
-            this.date = date;
-            this.curriculum = curriculum;
-            this.type = type;
-            this.duration = duration;
-        }
-
-        public List<String> getAsList(){return new ArrayList<String>(Arrays.asList(id, name, _class, date, curriculum, type, duration));}
-    }
 }
 
 

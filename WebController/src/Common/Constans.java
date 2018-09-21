@@ -36,5 +36,8 @@ public class Constans {
     public static final String IS_GOOD_ANSWER = "is_good_answer";
     public static final String STUDENT_ANSWER = "student_answer";
 
+    //Admin
+    public static final String USERS_LIST = "users_list";
+    public static final String ADMIN_DISTRACTIONS = "admin_distractions";
 
 }
