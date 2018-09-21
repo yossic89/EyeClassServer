@@ -19,11 +19,20 @@
         <servlet-class>Servlets.TeacherServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>Servlets.AdminServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>TeacherServlet</servlet-name>
         <url-pattern>/teacher</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>StudentServlet</servlet-name>
         <servlet-class>Servlets.StudentServlet</servlet-class>

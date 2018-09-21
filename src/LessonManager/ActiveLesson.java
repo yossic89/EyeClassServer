@@ -118,6 +118,8 @@ public class ActiveLesson extends Lesson {
     {
         m_distraction.closeLesson();
     }
+
+    public int getTeacherPage(){return m_teacherPage;}
   
     int m_teacherPage;
     Map<Long, CommonEnums.StudentConcentratedStatus> m_studentsStatus;

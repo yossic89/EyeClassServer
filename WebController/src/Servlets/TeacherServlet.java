@@ -2,24 +2,21 @@ package Servlets;
 
 import Common.Constans;
 import Controller.SessionUtils;
-import Distractions.DistractionParam;
 import Engine.EyeClassEngine;
 import Infra.CommonEnums;
-import Infra.Config;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.UsersEntity.Teacher;
+import ViewModel.TeacherDistractionParamViewModel;
 import com.google.gson.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class TeacherServlet extends HttpServlet {
@@ -98,9 +95,12 @@ public class TeacherServlet extends HttpServlet {
 
     private void teacherLessonsDistractions(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
-        List<DistractionParam> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
+        List<TeacherDistractionParamViewModel> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
+        List<List<String>> data = new ArrayList<>();
+        for(TeacherDistractionParamViewModel model : distractions )
+            data.add(model.getAsList());
         PrintWriter out = resp.getWriter();
-        out.print(new Gson().toJson(distractions));
+        out.print(new Gson().toJson(data));
         out.close();
     }
 

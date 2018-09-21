@@ -5,7 +5,12 @@ import Infra.EyeBase;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class DistractionParam extends EyeBase implements Serializable {
@@ -42,6 +47,27 @@ public class DistractionParam extends EyeBase implements Serializable {
         int duration = (int)(d1-d2)/1000;
         return duration;
     }
+
+    public String getDateAsStr()
+    {
+        DateFormat df = new SimpleDateFormat("MM/dd/YY");
+        return df.format(start);
+    }
+
+    public String getDurationAsStr()
+    {
+        int duration = getDistractionDuration();
+        int minutes = duration / 60;
+        int seconds = duration % 60;
+        String retVal = "";
+        if (minutes > 0)
+            retVal = String.format("%d min %d sec", minutes, seconds);
+        else
+            retVal = String.format("%d sec", seconds);
+        return  retVal;
+    }
+
+    public CommonEnums.DistractionType getDistrationType(){return this.type;}
 
     @Id @GeneratedValue
     protected long id;

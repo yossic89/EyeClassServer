@@ -1,19 +1,21 @@
 package Engine;
 
-import Distractions.DistractionParam;
 import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.EyeBase;
-import Infra.Logger;
 import Infra.PDFHandler;
 import LessonManager.ActiveLesson;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
+import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
+import ViewModel.AdminDistractionParamViewModel;
+import ViewModel.TeacherDistractionParamViewModel;
+import ViewModel.UsersViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,9 @@ public class SchoolServer extends EyeBase {
         return DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName());
     }
 
-    public List<DistractionParam> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
+    public List<TeacherDistractionParamViewModel> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
+
+    public List<AdminDistractionParamViewModel> getDistractionForAdmin(){return DBConnection.GetInstance().getDistractionForAdmin(m_school.GetName());}
 
     public School getSchool(){return m_school;}
 
@@ -92,6 +96,38 @@ public class SchoolServer extends EyeBase {
             return false;
         }
         return DBConnection.GetInstance().Save(t);
+    }
+
+    public boolean addAdmin(Admin a)
+    {
+        if (!checkIfUserExist(a.getM_id())) usersMap.put(a.getM_id(),a);
+        else{
+            Log("addAdmin: The user with Id: "+ a.getM_id() + " is already exist");
+            return false;
+        }
+        return DBConnection.GetInstance().Save(a);
+    }
+
+    public List<UsersViewModel> getAllUsersViewModel()
+    {
+        List<UsersViewModel> retVal = new ArrayList<>();
+        for(User u :getAllUsers())
+        {
+            if (u instanceof Student){
+                Student s = (Student)u;
+                String class_name = classMap.get(s.getStudentClassId()).GetClassName();
+                retVal.add(new UsersViewModel(s.getM_id(), s.getM_fullName(), CommonEnums.UserTypes.Student, class_name));
+            }
+            else if (u instanceof Teacher){
+                Teacher t = (Teacher)u;
+                retVal.add(new UsersViewModel(t.getM_id(), t.getM_fullName(), CommonEnums.UserTypes.Teacher, t.getCurriculum()));
+            }
+            else if (u instanceof Admin)
+            {
+                retVal.add(new UsersViewModel(u.getM_id(), u.getM_fullName(), CommonEnums.UserTypes.Admin));
+            }
+        }
+        return retVal;
     }
 
     public List<User> getAllUsers()
@@ -265,6 +301,15 @@ public class SchoolServer extends EyeBase {
         return classMap.get(classId);
     }
 
+    public void endAllLessons()
+    {
+        for (String class_id : m_classesActiveLesson.keySet())
+        {
+            m_classesActiveLesson.get(class_id).endLesson();
+        }
+        m_classesActiveLesson.clear();
+    }
+
     public void endLesson(String class_id)
     {
         if (m_classesActiveLesson.containsKey(class_id))
@@ -284,6 +329,8 @@ public class SchoolServer extends EyeBase {
         }
         return m_classesActiveLesson.get(class_id).get_questions();
     }
+
+    public int getTeacherPageForLesson(String class_id){return m_classesActiveLesson.get(class_id).getTeacherPage();}
 
 
     private School m_school;
