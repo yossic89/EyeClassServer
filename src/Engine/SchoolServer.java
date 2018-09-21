@@ -44,7 +44,7 @@ public class SchoolServer extends EyeBase {
         return DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName());
     }
 
-    public List<DistractionParam> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
+    public List<DistractionParam.DistractionParamViewModel> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
 
     public School getSchool(){return m_school;}
 

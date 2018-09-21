@@ -117,13 +117,23 @@ public class DBConnection extends EyeBase  {
 
     }
 
-    public List<DistractionParam> getDistractionForTeacher(long teacher_id)
+    public List<DistractionParam.DistractionParamViewModel> getDistractionForTeacher(long teacher_id)
     {
-        String query = String.format("SELECT d FROM DistractionParam d, Lesson l WHERE l.id=d.lesson_id AND l.m_teacher_id=%d", teacher_id);
-        List<Object> list = query(query, DistractionParam.class);
-        ArrayList<DistractionParam> retVal = new ArrayList<>();
+        String query = String.format(" SELECT d, l, s,c FROM Class c, Student s, DistractionParam d, Lesson l WHERE l.id=d.lesson_id AND c.id=s.m_classId AND d.student_id=s.m_id AND l.m_teacher_id=%d", teacher_id);
+        List<Object> list = query(query, Object[].class);
+        List<Object[]> ll = new ArrayList<>();
         for (Object obj : list)
-            retVal.add((DistractionParam)obj);
+            ll.add((Object[])obj);
+        List<DistractionParam.DistractionParamViewModel> retVal = new ArrayList<>();
+        for(Object[] obj : ll)
+        {
+            DistractionParam d = (DistractionParam)obj[0];
+            Lesson l = (Lesson)obj[1];
+            Student s = (Student)obj[2];
+            SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
+            DistractionParam.DistractionParamViewModel viewModel = new DistractionParam.DistractionParamViewModel(Long.toString(s.getM_id()), s.getM_fullName(), c.GetClassName(), d.getDateAsStr(), l.get_curriculum().toString(), d.getDistrationType().toString(), d.getDurationAsStr());
+            retVal.add(viewModel);
+        }
         return retVal;
     }
 

@@ -98,9 +98,12 @@ public class TeacherServlet extends HttpServlet {
 
     private void teacherLessonsDistractions(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
-        List<DistractionParam> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
+        List<DistractionParam.DistractionParamViewModel> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
+        List<List<String>> data = new ArrayList<>();
+        for(DistractionParam.DistractionParamViewModel model : distractions )
+            data.add(model.getAsList());
         PrintWriter out = resp.getWriter();
-        out.print(new Gson().toJson(distractions));
+        out.print(new Gson().toJson(data));
         out.close();
     }
 

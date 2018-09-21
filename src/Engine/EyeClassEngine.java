@@ -133,7 +133,7 @@ public class EyeClassEngine extends EyeBase {
 
     public List<Class> getAllClasses(User u){return schoolsMap.get(u.get_schoolId()).getAllClasses();}
 
-    public List<DistractionParam> getDistractionForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getDistractionForTeacher(t.getM_id());}
+    public List<DistractionParam.DistractionParamViewModel> getDistractionForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getDistractionForTeacher(t.getM_id());}
 
     public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId ){
         long studId = s.getM_id();
