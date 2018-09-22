@@ -27,4 +27,15 @@ public class QuestionStatisticForStudent {
     }
 
 
+    public boolean isGoodAnswer() {
+        return isGoodAnswer;
+    }
+
+    public String getStudAnswer() {
+        return studAnswer;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
 }
