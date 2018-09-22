@@ -64,22 +64,22 @@ public class SessionUtils {
 
         public void addUser(String unique, User u) {
             removePreviousUser(u.getM_id());
-           // Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
+            Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
             users_map.put(unique, u);
         }
 
         private void removePreviousUser(long user_id)
         {
-            long unique = -1;
+            String unique = "";
             for(Map.Entry entry: users_map.entrySet())
             {
                 if(((User)entry.getValue()).getM_id() == user_id)
                 {
-                    unique = (long)entry.getKey();
+                    unique = (String)entry.getKey();
                     break;
                 }
             }
-            if (unique > 0)
+            if (unique != "")
                 users_map.remove(unique);
 
         }
