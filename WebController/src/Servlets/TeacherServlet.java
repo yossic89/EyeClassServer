@@ -7,6 +7,7 @@ import Infra.CommonEnums;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.UsersEntity.Teacher;
+import ViewModel.QuestionAnsViewModel;
 import ViewModel.TeacherDistractionParamViewModel;
 import com.google.gson.*;
 
@@ -52,6 +53,9 @@ public class TeacherServlet extends HttpServlet {
             case Constans.TEACHER_DISTRACTIONS:
                 teacherLessonsDistractions(req, resp);
                 break;
+            case Constans.TEACHER_QUESTION_REPORT:
+                teacherQuestionReport(req, resp);
+                break;
             case Constans.CLASSES:
                 getClassesMap(req, resp);
                 break;
@@ -91,6 +95,17 @@ public class TeacherServlet extends HttpServlet {
             Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
             EyeClassEngine.GetInstance().endLesson(t, "ORT Eilat_Grade11_1");
         }
+    }
+
+    private void teacherQuestionReport(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        List<QuestionAnsViewModel> queAns = EyeClassEngine.GetInstance().getQuestionsAnsForTeacher(t);
+        List<List<String>> data = new ArrayList<>();
+        for(QuestionAnsViewModel model : queAns )
+            data.add(model.getAsList());
+        PrintWriter out = resp.getWriter();
+        out.print(new Gson().toJson(data));
+        out.close();
     }
 
     private void teacherLessonsDistractions(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{

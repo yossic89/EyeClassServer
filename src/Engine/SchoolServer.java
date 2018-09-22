@@ -14,6 +14,7 @@ import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
 import ViewModel.AdminDistractionParamViewModel;
+import ViewModel.QuestionAnsViewModel;
 import ViewModel.TeacherDistractionParamViewModel;
 import ViewModel.UsersViewModel;
 
@@ -47,6 +48,8 @@ public class SchoolServer extends EyeBase {
     }
 
     public List<TeacherDistractionParamViewModel> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
+
+    public List<QuestionAnsViewModel> getQuestionsAnsForTeacher(long teacher_id){return DBConnection.GetInstance().getQuestionsAnsForTeacher(teacher_id);}
 
     public List<AdminDistractionParamViewModel> getDistractionForAdmin(){return DBConnection.GetInstance().getDistractionForAdmin(m_school.GetName());}
 

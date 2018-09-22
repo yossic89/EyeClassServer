@@ -4,12 +4,14 @@ import Distractions.DistractionParam;
 import Infra.Config;
 import Infra.EyeBase;
 import LessonManager.Lesson;
+import LessonManager.QuestionStatisticForStudent;
 import SchoolEntity.School;
 import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
 import ViewModel.AdminDistractionParamViewModel;
+import ViewModel.QuestionAnsViewModel;
 import ViewModel.TeacherDistractionParamViewModel;
 
 import javax.jdo.annotations.Transactional;
@@ -131,6 +133,26 @@ public class DBConnection extends EyeBase  {
             SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
             Teacher t = (Teacher)obj[4];
             AdminDistractionParamViewModel viewModel = new AdminDistractionParamViewModel(Long.toString(s.getM_id()), s.getM_fullName(), c.GetClassName(), d.getDateAsStr(), l.get_curriculum().toString(),t.getM_fullName(), d.getDistrationType().toString(), d.getDurationAsStr());
+            retVal.add(viewModel);
+        }
+        return retVal;
+    }
+
+    public List<QuestionAnsViewModel> getQuestionsAnsForTeacher(long teacher_id)
+    {
+        String query = String.format("SELECT s, l, q, c FROM Class c, Student s, Lesson l, QuestionStatisticForStudent q WHERE l.m_teacher_id=%d AND q.lessonId=l.id AND s.m_id=q.studId AND c.id=s.m_classId", teacher_id);
+        List<Object> list = query(query, Object[].class);
+        List<Object[]> ll = new ArrayList<>();
+        for (Object obj : list)
+            ll.add((Object[])obj);
+        List<QuestionAnsViewModel> retVal = new ArrayList<>();
+        for(Object[] obj : ll)
+        {
+            Student s = (Student)obj[0];
+            Lesson l = (Lesson)obj[1];
+            QuestionStatisticForStudent q = (QuestionStatisticForStudent)obj[2];
+            SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
+            QuestionAnsViewModel viewModel = new QuestionAnsViewModel(s.getM_id(), s.getM_fullName(), c.GetClassName(), l.get_curriculum(), l.get_lessonHeadline(),q.getQuestion(), q.isGoodAnswer(), q.getStudAnswer());
             retVal.add(viewModel);
         }
         return retVal;
