@@ -20,6 +20,7 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="EyeClassServer" />
+    <orderEntry type="module" module-name="DBBuilder" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

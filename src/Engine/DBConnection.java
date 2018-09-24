@@ -16,6 +16,7 @@ import ViewModel.TeacherDistractionParamViewModel;
 
 import javax.jdo.annotations.Transactional;
 import javax.persistence.*;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -46,12 +47,11 @@ public class DBConnection extends EyeBase  {
 
     public void RestartDB()
     {
-        Object location = emf.getProperties().get("objectdb.connection.path");
-
+        String location = Config.getInstance().getDatabase().getDBPath();
         Close();
         try{
-            if (Files.deleteIfExists(Paths.get(location.toString())))
-                Log("DB is deleted from " + location.toString());
+            if (Files.deleteIfExists(Paths.get(location)))
+                Log("DB is deleted from " + location);
         }
         catch (Exception e) {}
 
