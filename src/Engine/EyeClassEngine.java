@@ -147,12 +147,12 @@ public class EyeClassEngine extends EyeBase {
 
     public List<QuestionAnsViewModel> getQuestionsAnsForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getQuestionsAnsForTeacher(t.getM_id());}
 
-    public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId ){
+    public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId, String rightAnswer ){
         long studId = s.getM_id();
         long lessonId = getLessonIdOfActiveLessonByStudent(s);
         long teacherId = getTeacherIdOfActiveLessonByStudent(s);
-        QuestionStatisticForStudent questionStatisticForStudent = new QuestionStatisticForStudent(studId, lessonId, teacherId, questionId,question, isGoodAns, studAns);
-        Log(String.format("Student with id: %d answer: %s " ,studId ,isGoodAns));
+        QuestionStatisticForStudent questionStatisticForStudent = new QuestionStatisticForStudent(studId, lessonId, teacherId, questionId,question, isGoodAns, studAns, rightAnswer);
+        Log(String.format("Student with id: %d answer: %s ,the right answer is: %s." ,studId ,isGoodAns,rightAnswer));
         if (!DBConnection.GetInstance().Save(questionStatisticForStudent))
             System.out.println("Can't save question statistic of student to db");
     }

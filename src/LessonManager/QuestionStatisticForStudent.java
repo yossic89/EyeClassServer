@@ -15,8 +15,9 @@ public class QuestionStatisticForStudent {
     private String question;
     private boolean isGoodAnswer;
     private String studAnswer;
+    private String rightAnswer;
 
-    public QuestionStatisticForStudent(long studId, long lessonId,long teacherId, long questionId, String question, boolean isGoodAnswer, String studAnswer){
+    public QuestionStatisticForStudent(long studId, long lessonId,long teacherId, long questionId, String question, boolean isGoodAnswer, String studAnswer, String rightAnswer){
         this.studId = studId;
         this.lessonId = lessonId;
         this.teacherId = teacherId;
@@ -24,6 +25,7 @@ public class QuestionStatisticForStudent {
         this.question = question;
         this.isGoodAnswer = isGoodAnswer;
         this.studAnswer = studAnswer;
+        this.rightAnswer = rightAnswer;
     }
 
 
@@ -38,4 +40,9 @@ public class QuestionStatisticForStudent {
     public String getQuestion() {
         return question;
     }
+
+    public String getRightAnswer() {
+        return rightAnswer;
+    }
+
 }
