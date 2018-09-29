@@ -76,6 +76,8 @@ public class TeacherServlet extends HttpServlet {
         return s.hasNext() ? s.next() : "";
     }
 
+    ///this is work around to check student without teacher application
+    /// this get method doenst work from appication, it works only from browesr links
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
