@@ -2,14 +2,14 @@ package Servlets;
 
 import Common.Constans;
 import Controller.SessionUtils;
-import Distractions.DistractionParam;
 import Engine.EyeClassEngine;
 import Infra.CommonEnums;
-import Infra.Config;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.UsersEntity.Teacher;
-import com.google.gson.Gson;
+import ViewModel.QuestionAnsViewModel;
+import ViewModel.TeacherDistractionParamViewModel;
+import com.google.gson.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TeacherServlet extends HttpServlet {
 
@@ -56,13 +53,27 @@ public class TeacherServlet extends HttpServlet {
             case Constans.TEACHER_DISTRACTIONS:
                 teacherLessonsDistractions(req, resp);
                 break;
+            case Constans.TEACHER_QUESTION_REPORT:
+                teacherQuestionReport(req, resp);
+                break;
             case Constans.CLASSES:
                 getClassesMap(req, resp);
                 break;
             case Constans.TEACHER_CURRICULUM:
                 getCurriculumList(req, resp);
                 break;
+            case Constans.UPLOAD_LESSON:
+                uploadLesson(req, resp);
+                break;
+            case Constans.TRACKER:
+                setTracker(req);
+                break;
         }
+    }
+
+    private String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -86,12 +97,68 @@ public class TeacherServlet extends HttpServlet {
         }
     }
 
+    private void teacherQuestionReport(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        List<QuestionAnsViewModel> queAns = EyeClassEngine.GetInstance().getQuestionsAnsForTeacher(t);
+        List<List<String>> data = new ArrayList<>();
+        for(QuestionAnsViewModel model : queAns )
+            data.add(model.getAsList());
+        PrintWriter out = resp.getWriter();
+        out.print(new Gson().toJson(data));
+        out.close();
+    }
+
     private void teacherLessonsDistractions(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
-        List<DistractionParam> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
+        List<TeacherDistractionParamViewModel> distractions = EyeClassEngine.GetInstance().getDistractionForTeacher(t);
+        List<List<String>> data = new ArrayList<>();
+        for(TeacherDistractionParamViewModel model : distractions )
+            data.add(model.getAsList());
         PrintWriter out = resp.getWriter();
-        out.print(new Gson().toJson(distractions));
+        out.print(new Gson().toJson(data));
         out.close();
+    }
+
+    private void uploadLesson(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String data = req.getParameter("data");
+        boolean result = true;
+        try
+        {
+            JsonObject jObj = new JsonParser().parse(data).getAsJsonObject();
+            String headline = jObj.get("mTitle").getAsString();
+            CommonEnums.Curriculum curriculum = CommonEnums.Curriculum.valueOf(jObj.get("mCurr").getAsString());
+            JsonArray pdfArr = jObj.get("lessonFile").getAsJsonArray();
+            byte[] pdfFile = new byte[pdfArr.size()];
+            for (int i = 0; i < pdfArr.size(); i++)
+                pdfFile[i] = pdfArr.get(i).getAsByte();
+            //check if there is questions
+            ArrayList<MultipleQuestion> questions = new ArrayList<>();
+            if (jObj.get("questions") != null)
+            {
+                JsonArray questionsJsonArr = jObj.get("questions").getAsJsonArray();
+                Gson gson = new Gson();
+                for (JsonElement jEle : questionsJsonArr)
+                    questions.add(gson.fromJson(jEle.toString(), MultipleQuestion.class));
+            }
+            result = EyeClassEngine.GetInstance().addLesson(t, pdfFile, headline, curriculum, questions);
+
+        }
+        catch (Exception e){
+            result = false;
+            System.out.println(e);
+        }
+
+        PrintWriter out = resp.getWriter();
+        out.print(result);
+        out.close();
+    }
+
+    private void setTracker(HttpServletRequest req) throws IOException, ServletException{
+        Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
+        String class_id = req.getParameter(Constans.CLASS_ID);
+        boolean toTrack = Boolean.valueOf(req.getParameter("track"));
+        EyeClassEngine.GetInstance().setTracker(t, class_id, toTrack);
     }
 
     private void getCurriculumList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{

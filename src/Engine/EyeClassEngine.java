@@ -1,6 +1,5 @@
 package Engine;
 
-import Distractions.DistractionParam;
 import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.Config;
@@ -14,6 +13,10 @@ import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
+import ViewModel.AdminDistractionParamViewModel;
+import ViewModel.QuestionAnsViewModel;
+import ViewModel.TeacherDistractionParamViewModel;
+import ViewModel.UsersViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,19 +127,45 @@ public class EyeClassEngine extends EyeBase {
 
     public void endLesson(Teacher t, String class_id){schoolsMap.get(t.get_schoolId()).endLesson(class_id);}
 
+    public void endAllLessons() {
+        for (String school_id : schoolsMap.keySet())
+            schoolsMap.get(school_id).endAllLessons();
+    }
+
+    public boolean addLesson(Teacher t, byte[] pdfBytes, String headline, CommonEnums.Curriculum cur, ArrayList<MultipleQuestion> ques)
+    {
+        return schoolsMap.get(t.get_schoolId()).addLesson(pdfBytes, headline, t.getM_id(), cur, ques);
+    }
+
+    public int getTeacherPageForLesson(Student s){return schoolsMap.get(s.get_schoolId()).getTeacherPageForLesson(s.getStudentClassId());}
+
+    public void setTracker(Teacher t, String class_id, boolean track){schoolsMap.get(t.get_schoolId()).setTrackerForClass(class_id, track);}
+
     public List<Class> getAllClasses(User u){return schoolsMap.get(u.get_schoolId()).getAllClasses();}
 
-    public List<DistractionParam> getDistractionForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getDistractionForTeacher(t.getM_id());}
+    public List<TeacherDistractionParamViewModel> getDistractionForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getDistractionForTeacher(t.getM_id());}
 
-    public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId ){
+    public List<QuestionAnsViewModel> getQuestionsAnsForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getQuestionsAnsForTeacher(t.getM_id());}
+
+    public void saveAnswerOfStudentInDB(Student s,String question, boolean isGoodAns, String studAns, long questionId, String rightAnswer ){
         long studId = s.getM_id();
         long lessonId = getLessonIdOfActiveLessonByStudent(s);
         long teacherId = getTeacherIdOfActiveLessonByStudent(s);
-        QuestionStatisticForStudent questionStatisticForStudent = new QuestionStatisticForStudent(studId, lessonId, teacherId, questionId, question, isGoodAns, studAns);
-        Log(String.format("Student with id: %d answer: %s " ,studId ,isGoodAns));
+        QuestionStatisticForStudent questionStatisticForStudent = new QuestionStatisticForStudent(studId, lessonId, teacherId, questionId,question, isGoodAns, studAns, rightAnswer);
+        Log(String.format("Student with id: %d answer: %s ,the right answer is: %s." ,studId ,isGoodAns,rightAnswer));
         if (!DBConnection.GetInstance().Save(questionStatisticForStudent))
             System.out.println("Can't save question statistic of student to db");
     }
+
+    public String addTeacher(Admin a, Teacher t){return schoolsMap.get(a.get_schoolId()).addTeacher(t);}
+
+    public String addAdmin(Admin a, Admin new_admin){return schoolsMap.get(a.get_schoolId()).addAdmin(new_admin);}
+
+    public String addStudent(Admin a, Student s){return schoolsMap.get(a.get_schoolId()).addStudentToClass(s.getStudentClassId(), s);}
+
+    public List<AdminDistractionParamViewModel> getDistractionForAdmin(Admin a){return schoolsMap.get(a.get_schoolId()).getDistractionForAdmin();}
+
+    public List<UsersViewModel> getAllUsersViewModel(Admin a){return schoolsMap.get(a.get_schoolId()).getAllUsersViewModel();}
 
     public ArrayList<MultipleQuestion> getQuestionsForClass(User u, String class_id){ return schoolsMap.get((u.get_schoolId())).getLessonQuestions(class_id);}
 

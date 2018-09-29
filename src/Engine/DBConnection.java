@@ -1,25 +1,27 @@
 package Engine;
 
 import Distractions.DistractionParam;
-import Infra.CommonEnums;
 import Infra.Config;
 import Infra.EyeBase;
 import LessonManager.Lesson;
+import LessonManager.QuestionStatisticForStudent;
 import SchoolEntity.School;
+import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
+import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
+import ViewModel.AdminDistractionParamViewModel;
+import ViewModel.QuestionAnsViewModel;
+import ViewModel.TeacherDistractionParamViewModel;
 
 import javax.jdo.annotations.Transactional;
 import javax.persistence.*;
-import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class DBConnection extends EyeBase  {
 
@@ -46,12 +48,11 @@ public class DBConnection extends EyeBase  {
 
     public void RestartDB()
     {
-        Object location = emf.getProperties().get("objectdb.connection.path");
-
+        String location = Config.getInstance().getDatabase().getDBPath();
         Close();
         try{
-            if (Files.deleteIfExists(Paths.get(location.toString())))
-                Log("DB is deleted from " + location.toString());
+            if (Files.deleteIfExists(Paths.get(location)))
+                Log("DB is deleted from " + location);
         }
         catch (Exception e) {}
 
@@ -117,13 +118,64 @@ public class DBConnection extends EyeBase  {
 
     }
 
-    public List<DistractionParam> getDistractionForTeacher(long teacher_id)
+    public List<AdminDistractionParamViewModel> getDistractionForAdmin(String schoolName)
     {
-        String query = String.format("SELECT d FROM DistractionParam d, Lesson l WHERE l.id=d.lesson_id AND l.m_teacher_id=%d", teacher_id);
-        List<Object> list = query(query, DistractionParam.class);
-        ArrayList<DistractionParam> retVal = new ArrayList<>();
+        String query = String.format(" SELECT d, l, s,c, t FROM Teacher t, Class c, Student s, DistractionParam d, Lesson l WHERE l.m_teacher_id=t.m_id AND l.id=d.lesson_id AND c.id=s.m_classId AND d.student_id=s.m_id AND s.m_schoolId=\"%s\"", schoolName);
+        List<Object> list = query(query, Object[].class);
+        List<Object[]> ll = new ArrayList<>();
         for (Object obj : list)
-            retVal.add((DistractionParam)obj);
+            ll.add((Object[])obj);
+        List<AdminDistractionParamViewModel> retVal = new ArrayList<>();
+        for(Object[] obj : ll)
+        {
+            DistractionParam d = (DistractionParam)obj[0];
+            Lesson l = (Lesson)obj[1];
+            Student s = (Student)obj[2];
+            SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
+            Teacher t = (Teacher)obj[4];
+            AdminDistractionParamViewModel viewModel = new AdminDistractionParamViewModel(Long.toString(s.getM_id()), s.getM_fullName(), c.GetClassName(), d.getDateAsStr(), l.get_curriculum().toString(),t.getM_fullName(), d.getDistrationType().toString(), d.getDurationAsStr());
+            retVal.add(viewModel);
+        }
+        return retVal;
+    }
+
+    public List<QuestionAnsViewModel> getQuestionsAnsForTeacher(long teacher_id)
+    {
+        String query = String.format("SELECT s, l, q, c FROM Class c, Student s, Lesson l, QuestionStatisticForStudent q WHERE l.m_teacher_id=%d AND q.lessonId=l.id AND s.m_id=q.studId AND c.id=s.m_classId", teacher_id);
+        List<Object> list = query(query, Object[].class);
+        List<Object[]> ll = new ArrayList<>();
+        for (Object obj : list)
+            ll.add((Object[])obj);
+        List<QuestionAnsViewModel> retVal = new ArrayList<>();
+        for(Object[] obj : ll)
+        {
+            Student s = (Student)obj[0];
+            Lesson l = (Lesson)obj[1];
+            QuestionStatisticForStudent q = (QuestionStatisticForStudent)obj[2];
+            SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
+            QuestionAnsViewModel viewModel = new QuestionAnsViewModel(s.getM_id(), s.getM_fullName(), c.GetClassName(), l.get_curriculum(), l.get_lessonHeadline(),q.getQuestion(), q.isGoodAnswer(), q.getStudAnswer());
+            retVal.add(viewModel);
+        }
+        return retVal;
+    }
+
+    public List<TeacherDistractionParamViewModel> getDistractionForTeacher(long teacher_id)
+    {
+        String query = String.format(" SELECT d, l, s,c FROM Class c, Student s, DistractionParam d, Lesson l WHERE l.id=d.lesson_id AND c.id=s.m_classId AND d.student_id=s.m_id AND l.m_teacher_id=%d", teacher_id);
+        List<Object> list = query(query, Object[].class);
+        List<Object[]> ll = new ArrayList<>();
+        for (Object obj : list)
+            ll.add((Object[])obj);
+        List<TeacherDistractionParamViewModel> retVal = new ArrayList<>();
+        for(Object[] obj : ll)
+        {
+            DistractionParam d = (DistractionParam)obj[0];
+            Lesson l = (Lesson)obj[1];
+            Student s = (Student)obj[2];
+            SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
+            TeacherDistractionParamViewModel viewModel = new TeacherDistractionParamViewModel(Long.toString(s.getM_id()), s.getM_fullName(), c.GetClassName(), d.getDateAsStr(), l.get_curriculum().toString(), d.getDistrationType().toString(), d.getDurationAsStr());
+            retVal.add(viewModel);
+        }
         return retVal;
     }
 

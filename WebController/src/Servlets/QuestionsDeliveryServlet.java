@@ -74,8 +74,9 @@ public class QuestionsDeliveryServlet extends HttpServlet {
         String question = req.getParameter(Constans.QUESTION);
         boolean isGoodAns =  Boolean.valueOf(req.getParameter(Constans.IS_GOOD_ANSWER));
         String studAns = req.getParameter(Constans.STUDENT_ANSWER);
+        String rightAns = req.getParameter(Constans.RIGHT_ANSWER);
         long questionId = Long.valueOf(req.getParameter(Constans.QUESTION_ID));
-        EyeClassEngine.GetInstance().saveAnswerOfStudentInDB(student, question,isGoodAns,studAns,questionId);
+        EyeClassEngine.GetInstance().saveAnswerOfStudentInDB(student, question,isGoodAns,studAns,questionId,rightAns);
     }
 
 

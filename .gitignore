@@ -32,3 +32,4 @@ out/artifacts/WebController_war_exploded/WEB-INF/lib/gson-2.2.2.jar
 out/artifacts/EyeClassServer_jar/config.json
 out/production/UnitTests/META-INF/MANIFEST.MF
 UnitTests/src/META-INF/MANIFEST.MF
+out/production/DBBuilder/META-INF/MANIFEST.MF

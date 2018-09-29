@@ -39,7 +39,18 @@ public class StudentServlet extends HttpServlet {
             case Constans.MEASURE:
                 getMeasureData(req, resp);
                 break;
+            case Constans.TEACHER_PAGE:
+                getTeacherPage(req,resp);
+                break;
         }
+    }
+
+    private void getTeacherPage(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
+    {
+        Student s = (Student)SessionUtils.GetInstance().GetUserFromSession(req);
+        int page = EyeClassEngine.GetInstance().getTeacherPageForLesson(s);
+        PrintWriter out = resp.getWriter();
+        out.print(page);
     }
 
     private void isActiveLesson(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException

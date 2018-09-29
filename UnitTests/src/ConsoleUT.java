@@ -5,6 +5,7 @@ import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
+import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
@@ -43,7 +44,7 @@ public class ConsoleUT {
     public void mainMenu(){
         System.out.println("Default school is Ort Eilat with class YA 1(יא 1)");
         List<String> menu = Arrays.asList("Reset all DB", "Show all users", "Add Student"
-        ,"Add Teacher", "Add lesson", "Select lesson for teacher", "Exit" );
+        ,"Add Teacher", "Add lesson", "Select lesson for teacher","Add Admin", "Exit" );
 
         while (true) {
             int indx = handleList(menu);
@@ -69,6 +70,9 @@ public class ConsoleUT {
                     showLesson();
                     break;
                 case 6:
+                    addAdmin();
+                    break;
+                case 7:
                     System.out.println("BYE!");
                     return;
 
@@ -98,7 +102,7 @@ public class ConsoleUT {
             allopt[i] = fls;
             //allopt.add(ans);
         }
-        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt,topic);
+        MultipleQuestion mulq1= new MultipleQuestion(q1, ans, allopt,topic, 30);
         return mulq1;
     }
 
@@ -177,6 +181,19 @@ public class ConsoleUT {
         System.out.print("Enter full name: ");
         String name = scr.nextLine();
         server.addStudentToClass(m_class,new Student(id, pass, server.getSchool().GetName(), name, m_class));
+    }
+
+    private void addAdmin()
+    {
+        Scanner scr = new Scanner(System.in);
+        System.out.print("Enter ID: ");
+        long id = scr.nextLong();
+        scr.nextLine();
+        System.out.print("Enter password(Top secret): ");
+        String pass = scr.nextLine();
+        System.out.print("Enter full name: ");
+        String name = scr.nextLine();
+        server.addAdmin(new Admin(id, pass, server.getSchool().GetName(), name));
     }
 
     private void addTeacher()

@@ -102,11 +102,16 @@ public class DistractionReport extends EyeBase {
         return retVal;
     }
 
+    public void closeAllDistrations()
+    {
+        for(long id : studentsDistractions.keySet())
+            handleLastDistraction(id);
+    }
+
     public void closeLesson()
     {
         //handle last districation
-        for(long id : studentsDistractions.keySet())
-            handleLastDistraction(id);
+        closeAllDistrations();
         //save in DB
         saveDistractions();
     }

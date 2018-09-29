@@ -1,19 +1,22 @@
 package Engine;
 
-import Distractions.DistractionParam;
 import Distractions.MeasureParams;
 import Infra.CommonEnums;
 import Infra.EyeBase;
-import Infra.Logger;
 import Infra.PDFHandler;
 import LessonManager.ActiveLesson;
 import LessonManager.Lesson;
 import LessonManager.MultipleQuestion;
 import SchoolEntity.Class;
 import SchoolEntity.School;
+import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
+import ViewModel.AdminDistractionParamViewModel;
+import ViewModel.QuestionAnsViewModel;
+import ViewModel.TeacherDistractionParamViewModel;
+import ViewModel.UsersViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,10 +44,15 @@ public class SchoolServer extends EyeBase {
     }
 
     public List<SchoolEntity.Class> getAllClasses() {
+
         return DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName());
     }
 
-    public List<DistractionParam> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
+    public List<TeacherDistractionParamViewModel> getDistractionForTeacher(long id){return DBConnection.GetInstance().getDistractionForTeacher(id);}
+
+    public List<QuestionAnsViewModel> getQuestionsAnsForTeacher(long teacher_id){return DBConnection.GetInstance().getQuestionsAnsForTeacher(teacher_id);}
+
+    public List<AdminDistractionParamViewModel> getDistractionForAdmin(){return DBConnection.GetInstance().getDistractionForAdmin(m_school.GetName());}
 
     public School getSchool(){return m_school;}
 
@@ -64,6 +72,11 @@ public class SchoolServer extends EyeBase {
         return true;
     }
 
+    public void setTrackerForClass(String class_id, boolean toTrack)
+    {
+        m_classesActiveLesson.get(class_id).setCollectData(toTrack);
+    }
+
     public boolean addClass(Class c)
     {
         if (!checkIfClassExist(c.getID())) addClassToMap(c);
@@ -79,14 +92,52 @@ public class SchoolServer extends EyeBase {
         return DBConnection.GetInstance().getClassByName(id);
     }
 
-    public boolean addTeacher(Teacher t)
+    public String addTeacher(Teacher t)
     {
+        String err = "";
         if (!checkIfUserExist(t.getM_id())) usersMap.put(t.getM_id(),t);
         else{
-            Log("addTeacher: The user with Id: "+ t.getM_id() + " is already exist");
-            return false;
+            err = ("The user with Id: "+ t.getM_id() + " is already exist");
+            return err;
         }
-        return DBConnection.GetInstance().Save(t);
+        if (!DBConnection.GetInstance().Save(t))
+            err = "Internal DB error";
+        return err;
+    }
+
+    public String addAdmin(Admin a)
+    {
+        String err = "";
+        if (!checkIfUserExist(a.getM_id())) usersMap.put(a.getM_id(),a);
+        else{
+            err =("addAdmin: The user with Id: "+ a.getM_id() + " is already exist");
+            return err;
+        }
+        if (!DBConnection.GetInstance().Save(a))
+            err = "Internal DB error";
+        return err;
+    }
+
+    public List<UsersViewModel> getAllUsersViewModel()
+    {
+        List<UsersViewModel> retVal = new ArrayList<>();
+        for(User u :getAllUsers())
+        {
+            if (u instanceof Student){
+                Student s = (Student)u;
+                String class_name = classMap.get(s.getStudentClassId()).GetClassName();
+                retVal.add(new UsersViewModel(s.getM_id(), s.getM_fullName(), CommonEnums.UserTypes.Student, class_name));
+            }
+            else if (u instanceof Teacher){
+                Teacher t = (Teacher)u;
+                retVal.add(new UsersViewModel(t.getM_id(), t.getM_fullName(), CommonEnums.UserTypes.Teacher, t.getCurriculum()));
+            }
+            else if (u instanceof Admin)
+            {
+                retVal.add(new UsersViewModel(u.getM_id(), u.getM_fullName(), CommonEnums.UserTypes.Admin));
+            }
+        }
+        return retVal;
     }
 
     public List<User> getAllUsers()
@@ -109,23 +160,35 @@ public class SchoolServer extends EyeBase {
         return c.GetClassName();
     }
 
-    public boolean addStudentToClass(String classId,Student student){
+    public String addStudentToClass(String classId,Student student){
+        String err = "";
         //Add student to student maps
         if (!checkIfUserExist(student.getM_id())) usersMap.put(student.getM_id(),student);
         else{
-            Log("addStudentToClass: The user with Id: "+ student.getM_id() + " is already exist");
-            return false;
+            err = ("The user with Id: "+ student.getM_id() + " is already exist");
+            return err;
         }
 
         //check if class exist
-        if (!checkIfClassExist(classId)) return false;
+        if (!checkIfClassExist(classId))
+        {
+            err = "Class: " + classId + "not exsits in the system";
+            return err;
+        }
         Class c = getClassFromMap(classId);
 
         //add student to instance class and to db
-        if (!c.AddStudent(student.getM_id())) return false;
-        if (!DBConnection.GetInstance().Save(student)) return false;
+        if (!c.AddStudent(student.getM_id()))
+        {
+            err = "User " + student.getM_fullName() + " is already in the class";
+            return err;
+        }
+        if (!DBConnection.GetInstance().Save(student)){
+            err = "Internal DB error";
+            return err;
+        }
         Log("addStudentToClass: The student: "+ student.getM_id() + " added to class: "+classId);
-        return true;
+        return err;
     }
 
     //Users
@@ -260,6 +323,15 @@ public class SchoolServer extends EyeBase {
         return classMap.get(classId);
     }
 
+    public void endAllLessons()
+    {
+        for (String class_id : m_classesActiveLesson.keySet())
+        {
+            m_classesActiveLesson.get(class_id).endLesson();
+        }
+        m_classesActiveLesson.clear();
+    }
+
     public void endLesson(String class_id)
     {
         if (m_classesActiveLesson.containsKey(class_id))
@@ -279,6 +351,8 @@ public class SchoolServer extends EyeBase {
         }
         return m_classesActiveLesson.get(class_id).get_questions();
     }
+
+    public int getTeacherPageForLesson(String class_id){return m_classesActiveLesson.get(class_id).getTeacherPage();}
 
 
     private School m_school;

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DBBuilder/DBBuilder.iml" filepath="$PROJECT_DIR$/DBBuilder/DBBuilder.iml" />
       <module fileurl="file://$PROJECT_DIR$/EyeClassServer.iml" filepath="$PROJECT_DIR$/EyeClassServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/UnitTests/UnitTests.iml" filepath="$PROJECT_DIR$/UnitTests/UnitTests.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebController/WebController.iml" filepath="$PROJECT_DIR$/WebController/WebController.iml" />

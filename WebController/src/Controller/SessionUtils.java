@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SessionUtils {
 
     public void AddUserToSession(HttpServletRequest request, User u)
     {
-        long unique = System.currentTimeMillis();
+        String unique = UUID.randomUUID().toString().replace("-", "");
         HttpSession session = request.getSession(true);
         if (session != null)
             session.setAttribute(Constans.UNIQUE_ID, unique);
@@ -25,8 +26,8 @@ public class SessionUtils {
     {
         User retVal = null;
         HttpSession session = request.getSession(false);
-        if (m_manager.checkIfSessionExists((long)session.getAttribute(Constans.UNIQUE_ID)))
-            retVal = m_manager.getUser((long)session.getAttribute(Constans.UNIQUE_ID));
+        if (m_manager.checkIfSessionExists((String)session.getAttribute(Constans.UNIQUE_ID)))
+            retVal = m_manager.getUser((String)session.getAttribute(Constans.UNIQUE_ID));
         return retVal;
     }
 
@@ -59,35 +60,35 @@ public class SessionUtils {
             users_map = new HashMap<>();
         }
 
-        public boolean checkIfSessionExists(long unique) { return users_map.containsKey(unique);}
+        public boolean checkIfSessionExists(String unique) { return users_map.containsKey(unique);}
 
-        public void addUser(long unique, User u) {
+        public void addUser(String unique, User u) {
             removePreviousUser(u.getM_id());
-           // Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
+            Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
             users_map.put(unique, u);
         }
 
         private void removePreviousUser(long user_id)
         {
-            long unique = -1;
+            String unique = "";
             for(Map.Entry entry: users_map.entrySet())
             {
                 if(((User)entry.getValue()).getM_id() == user_id)
                 {
-                    unique = (long)entry.getKey();
+                    unique = (String)entry.getKey();
                     break;
                 }
             }
-            if (unique > 0)
+            if (unique != "")
                 users_map.remove(unique);
 
         }
 
-        public void deleteUser(long l) {users_map.remove(l);}
+        public void deleteUser(String id) {users_map.remove(id);}
 
 
-        public User getUser(long l){return users_map.get(l);}
+        public User getUser(String id){return users_map.get(id);}
 
-        HashMap<Long, User> users_map;
+        HashMap<String, User> users_map;
     }
 }
