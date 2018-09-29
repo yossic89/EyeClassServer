@@ -28,7 +28,6 @@ public class MultipleQuestion extends EyeBase implements Serializable {
 
     public void setTopic(String topic){this.topic =topic;}
 
-
     @Id @GeneratedValue
     private long id;
     String question;
@@ -36,7 +35,6 @@ public class MultipleQuestion extends EyeBase implements Serializable {
     String[] allOptions;
     String topic;
     int time;
-
 
     public class MultiQueData
     {
@@ -56,5 +54,4 @@ public class MultipleQuestion extends EyeBase implements Serializable {
         String question;
         String[] options;
     }
-
 }

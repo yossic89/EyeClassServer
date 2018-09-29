@@ -22,7 +22,13 @@ public class CommonEnums {
         Math,
         History,
         English,
-        Assembly,
+        Literature,
+        Citizenship,
+        Biology,
+        Chemistry,
+        Physics,
+        Programming,
+        Geography,
         Bible,
     }
 
