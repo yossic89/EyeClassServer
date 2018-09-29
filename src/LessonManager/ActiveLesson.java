@@ -7,7 +7,6 @@ import Infra.CommonEnums;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class ActiveLesson extends Lesson {
         try {
            return Files.readAllBytes(Paths.get(m_filePath));
         } catch (IOException e) {
-            Log("Failed to open lesson pdf" + e);
+            log("Failed to open lesson pdf" + e);
         }
         return null;
     }
@@ -50,7 +49,7 @@ public class ActiveLesson extends Lesson {
 
         //update map
         if (!m_studentsStatus.containsKey(measure.getStudent_id()))
-            Log("Unable to find studnet id " + measure.getStudent_id() +" for lesson id: " + id);
+            log("Unable to find studnet id " + measure.getStudent_id() +" for lesson id: " + id);
         else
         {
             CommonEnums.DistractionType type = m_distraction.getStudentStatus(measure.getStudent_id());
@@ -65,7 +64,7 @@ public class ActiveLesson extends Lesson {
     private void studentStatusDebug()
     {
         for (Map.Entry<Long, CommonEnums.StudentConcentratedStatus> iter : m_studentsStatus.entrySet())
-            Log(String.format("id [%d] status [%s]", iter.getKey(), iter.getValue().toString()));
+            log(String.format("id [%d] status [%s]", iter.getKey(), iter.getValue().toString()));
     }
 
     public Map<Long, CommonEnums.StudentConcentratedStatus> getStudentsStatus() {
@@ -73,19 +72,19 @@ public class ActiveLesson extends Lesson {
         return m_studentsStatus;
     }
 
-    public ArrayList<MultipleQuestion> get_questions() {
+    public List<MultipleQuestion> get_questions() {
         return m_questions;
     }
 
     public void setTeacherPage(int teacherPage) {
         this.m_teacherPage = teacherPage;
-        Log(String.format("Active Lesson [%s] teacher page set to [%d]", m_lessonHeadline, this.m_teacherPage));
+        log(String.format("Active Lesson [%s] teacher page set to [%d]", m_lessonHeadline, this.m_teacherPage));
     }
 
     public void setCollectData(boolean toCollect)
     {
         collectData = toCollect;
-        Log(String.format("Collect data to lesson [%s] is set to [%s]", m_lessonHeadline, collectData));
+        log(String.format("Collect data to lesson [%s] is set to [%s]", m_lessonHeadline, collectData));
         //restart status to unkown and close open
         if (!collectData)
         {
@@ -124,6 +123,6 @@ public class ActiveLesson extends Lesson {
     int m_teacherPage;
     Map<Long, CommonEnums.StudentConcentratedStatus> m_studentsStatus;
     DistractionReport m_distraction;
-    ArrayList<MultipleQuestion> m_questions;
+    List<MultipleQuestion> m_questions;
     boolean collectData;
 }

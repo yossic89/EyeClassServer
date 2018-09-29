@@ -183,7 +183,7 @@ public class TeacherServlet extends HttpServlet {
     private void lessonsForTeacher(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         //get all lessons for this teacher
-        ArrayList<Lesson> lessons = EyeClassEngine.GetInstance().getAllLessonsForTeacher(t);
+        List<Lesson> lessons = EyeClassEngine.GetInstance().getAllLessonsForTeacher(t);
         HashMap<String, HashMap<String, Long>> curculum_headline_id = new HashMap<>();
         for (Lesson l : lessons)
         {
@@ -258,7 +258,7 @@ public class TeacherServlet extends HttpServlet {
     private void questionLesson(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
         Teacher t = (Teacher)SessionUtils.GetInstance().GetUserFromSession(req);
         String class_id = req.getParameter(Constans.CLASS_ID);
-        ArrayList<MultipleQuestion> data = EyeClassEngine.GetInstance().getQuestionsForClass(t, class_id);
+        List<MultipleQuestion> data = EyeClassEngine.GetInstance().getQuestionsForClass(t, class_id);
         PrintWriter out = resp.getWriter();
         out.print(new Gson().toJson(data));
         out.close();

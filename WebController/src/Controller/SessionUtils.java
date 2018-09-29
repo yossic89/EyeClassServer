@@ -4,7 +4,6 @@ import Common.Constans;
 import Infra.EyeBase;
 import SchoolEntity.UsersEntity.User;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -64,7 +63,7 @@ public class SessionUtils {
 
         public void addUser(String unique, User u) {
             removePreviousUser(u.getM_id());
-            Log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
+            log(String.format("%d:%s logged in", u.getM_id(), u.getM_fullName()));
             users_map.put(unique, u);
         }
 

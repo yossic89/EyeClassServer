@@ -18,7 +18,6 @@ import ViewModel.QuestionAnsViewModel;
 import ViewModel.TeacherDistractionParamViewModel;
 import ViewModel.UsersViewModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +102,7 @@ public class EyeClassEngine extends EyeBase {
         schoolsMap.get(t.get_schoolId()).startLesson(lesson_id, class_id);
     }
 
-    public ArrayList<Lesson> getAllLessonsForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getAllLessonsForTeacher(t.getM_id());}
+    public List<Lesson> getAllLessonsForTeacher(Teacher t){return schoolsMap.get(t.get_schoolId()).getAllLessonsForTeacher(t.getM_id());}
 
     public Map<String, CommonEnums.StudentConcentratedStatus> getStudentsLessonStatus(User u, String class_id) {return schoolsMap.get(u.get_schoolId()).getStudentsStatus(class_id);}
 
@@ -132,7 +131,7 @@ public class EyeClassEngine extends EyeBase {
             schoolsMap.get(school_id).endAllLessons();
     }
 
-    public boolean addLesson(Teacher t, byte[] pdfBytes, String headline, CommonEnums.Curriculum cur, ArrayList<MultipleQuestion> ques)
+    public boolean addLesson(Teacher t, byte[] pdfBytes, String headline, CommonEnums.Curriculum cur, List<MultipleQuestion> ques)
     {
         return schoolsMap.get(t.get_schoolId()).addLesson(pdfBytes, headline, t.getM_id(), cur, ques);
     }
@@ -152,7 +151,7 @@ public class EyeClassEngine extends EyeBase {
         long lessonId = getLessonIdOfActiveLessonByStudent(s);
         long teacherId = getTeacherIdOfActiveLessonByStudent(s);
         QuestionStatisticForStudent questionStatisticForStudent = new QuestionStatisticForStudent(studId, lessonId, teacherId, questionId,question, isGoodAns, studAns, rightAnswer);
-        Log(String.format("Student with id: %d answer: %s ,the right answer is: %s." ,studId ,isGoodAns,rightAnswer));
+        log(String.format("Student with id: %d answer: %s ,the right answer is: %s." ,studId ,isGoodAns,rightAnswer));
         if (!DBConnection.GetInstance().Save(questionStatisticForStudent))
             System.out.println("Can't save question statistic of student to db");
     }
@@ -167,7 +166,7 @@ public class EyeClassEngine extends EyeBase {
 
     public List<UsersViewModel> getAllUsersViewModel(Admin a){return schoolsMap.get(a.get_schoolId()).getAllUsersViewModel();}
 
-    public ArrayList<MultipleQuestion> getQuestionsForClass(User u, String class_id){ return schoolsMap.get((u.get_schoolId())).getLessonQuestions(class_id);}
+    public List<MultipleQuestion> getQuestionsForClass(User u, String class_id){ return schoolsMap.get((u.get_schoolId())).getLessonQuestions(class_id);}
 
 
     HashMap<String, SchoolServer> schoolsMap;

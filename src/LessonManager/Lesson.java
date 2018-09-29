@@ -8,12 +8,13 @@ import SchoolEntity.UsersEntity.Teacher;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Lesson extends EyeBase implements Serializable {
 
 
-    public Lesson(String filePath, ArrayList<MultipleQuestion> questions, long teacher_id, String lessonHeadline, CommonEnums.Curriculum curriculum) {
+    public Lesson(String filePath, List<MultipleQuestion> questions, long teacher_id, String lessonHeadline, CommonEnums.Curriculum curriculum) {
         this.m_filePath = filePath;
         this.m_questions = questions;
         this.m_teacher_id = teacher_id;
@@ -35,7 +36,7 @@ public class Lesson extends EyeBase implements Serializable {
         return m_curriculum;
     }
 
-    public ArrayList<MultipleQuestion> getM_questions(){
+    public List<MultipleQuestion> getM_questions(){
         return m_questions;
     }
 
@@ -45,7 +46,7 @@ public class Lesson extends EyeBase implements Serializable {
     protected long id;
     String m_filePath;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    ArrayList<MultipleQuestion> m_questions;
+    List<MultipleQuestion> m_questions;
     long m_teacher_id;
     String m_lessonHeadline;
     CommonEnums.Curriculum m_curriculum;

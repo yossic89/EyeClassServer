@@ -6,7 +6,6 @@ import Infra.EyeBase;
 import LessonManager.Lesson;
 import LessonManager.QuestionStatisticForStudent;
 import SchoolEntity.School;
-import SchoolEntity.UsersEntity.Admin;
 import SchoolEntity.UsersEntity.Student;
 import SchoolEntity.UsersEntity.Teacher;
 import SchoolEntity.UsersEntity.User;
@@ -16,11 +15,9 @@ import ViewModel.TeacherDistractionParamViewModel;
 
 import javax.jdo.annotations.Transactional;
 import javax.persistence.*;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DBConnection extends EyeBase  {
@@ -52,7 +49,7 @@ public class DBConnection extends EyeBase  {
         Close();
         try{
             if (Files.deleteIfExists(Paths.get(location)))
-                Log("DB is deleted from " + location);
+                log("DB is deleted from " + location);
         }
         catch (Exception e) {}
 
@@ -61,7 +58,7 @@ public class DBConnection extends EyeBase  {
 
     public List<Object> query(String queryStr,Class obj)
     {
-        Log("Query: "+ queryStr);
+        log("Query: "+ queryStr);
         TypedQuery<Object> queryL = em.createQuery(queryStr, obj);
         return queryL.getResultList();
     }
@@ -87,11 +84,11 @@ public class DBConnection extends EyeBase  {
         return retVal.get(0);
     }
 
-    public ArrayList<Lesson> getLessonsForTeacher(long id)
+    public List<Lesson> getLessonsForTeacher(long id)
     {
         String query = String.format("SELECT l FROM Lesson l WHERE l.m_teacher_id=%d", id);
         List<Object> list = query(query, Lesson.class);
-        ArrayList<Lesson> retVal = new ArrayList<>();
+        List<Lesson> retVal = new ArrayList<>();
         for (Object obj : list)
             retVal.add((Lesson)obj);
         return retVal;
@@ -153,7 +150,7 @@ public class DBConnection extends EyeBase  {
             Lesson l = (Lesson)obj[1];
             QuestionStatisticForStudent q = (QuestionStatisticForStudent)obj[2];
             SchoolEntity.Class c = (SchoolEntity.Class)obj[3];
-            QuestionAnsViewModel viewModel = new QuestionAnsViewModel(s.getM_id(), s.getM_fullName(), c.GetClassName(), l.get_curriculum(), l.get_lessonHeadline(),q.getQuestion(), q.isGoodAnswer(), q.getStudAnswer());
+            QuestionAnsViewModel viewModel = new QuestionAnsViewModel(s.getM_id(), s.getM_fullName(), c.GetClassName(), l.get_curriculum(), l.get_lessonHeadline(),q.getQuestion(), q.isGoodAnswer(), q.getStudAnswer(), q.getRightAnswer());
             retVal.add(viewModel);
         }
         return retVal;
@@ -214,7 +211,7 @@ public class DBConnection extends EyeBase  {
         emf = Persistence.createEntityManagerFactory(Config.getInstance().getDatabase().getDBPath());
         em = emf.createEntityManager();
         Object location = emf.getProperties().get("objectdb.connection.path");
-        Log("DB location: " + location.toString());
+        log("DB location: " + location.toString());
         dbOpen = true;
     }
 

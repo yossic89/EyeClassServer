@@ -56,7 +56,7 @@ public class SchoolServer extends EyeBase {
 
     public School getSchool(){return m_school;}
 
-    public boolean addLesson(byte[] pdfBytes, String headline, long teacher_id, CommonEnums.Curriculum cur, ArrayList<MultipleQuestion> ques)
+    public boolean addLesson(byte[] pdfBytes, String headline, long teacher_id, CommonEnums.Curriculum cur, List<MultipleQuestion> ques)
     {
         //check validity teacher_id
         if (!checkIfUserExist(teacher_id))
@@ -148,7 +148,7 @@ public class SchoolServer extends EyeBase {
     //Class
     private boolean checkIfClassExist(String classId){
         if (!classMap.containsKey(classId)){
-            Log("checkIfClassExist: The class with the id: "+classId +" is not exist.");
+            log("checkIfClassExist: The class with the id: "+classId +" is not exist.");
             return false;
         }
         return true;
@@ -187,7 +187,7 @@ public class SchoolServer extends EyeBase {
             err = "Internal DB error";
             return err;
         }
-        Log("addStudentToClass: The student: "+ student.getM_id() + " added to class: "+classId);
+        log("addStudentToClass: The student: "+ student.getM_id() + " added to class: "+classId);
         return err;
     }
 
@@ -199,12 +199,12 @@ public class SchoolServer extends EyeBase {
         return true;
     }
 
-    public ArrayList<Lesson> getAllLessonsForTeacher(long id)
+    public List<Lesson> getAllLessonsForTeacher(long id)
     {
         return DBConnection.GetInstance().getLessonsForTeacher(id);
     }
 
-    public ArrayList<Long> getAllTeacherId()
+    public List<Long> getAllTeacherId()
     {
         ArrayList<Long> teachers = new ArrayList<>();
         for (Map.Entry<Long, User> entry : usersMap.entrySet())
@@ -213,10 +213,6 @@ public class SchoolServer extends EyeBase {
                 teachers.add(entry.getKey());
         }
         return teachers;
-    }
-
-    public void addStudentToMap(Student student){
-        usersMap.put(student.getM_id(),student);
     }
 
     public Student getStudentFromMap(long studentId){
@@ -233,7 +229,7 @@ public class SchoolServer extends EyeBase {
 
     public String getPassword(long studentId){
         if (!checkIfUserExist(studentId)){
-            Log("getPassword: The student with the id: "+studentId +" is not exist.");
+            log("getPassword: The student with the id: "+studentId +" is not exist.");
             return null;
         }
         return getStudentFromMap(studentId).getM_password();
@@ -241,7 +237,7 @@ public class SchoolServer extends EyeBase {
 
     public String getFullNameOfUser(long studentId){
         if (!checkIfUserExist(studentId)){
-            Log("getFullNameOfUser: The student with the id: "+studentId +" is not exist.");
+            log("getFullNameOfUser: The student with the id: "+studentId +" is not exist.");
             return null;
         }
         return getStudentFromMap(studentId).getM_fullName();
@@ -249,7 +245,7 @@ public class SchoolServer extends EyeBase {
 
     public String getSchoolOfUser(long studentId){
         if (!checkIfUserExist(studentId)){
-            Log("getSchoolOfUser: The student with the id: "+studentId +" is not exist.");
+            log("getSchoolOfUser: The student with the id: "+studentId +" is not exist.");
         }
         return getStudentFromMap(studentId).get_schoolId();
     }
@@ -260,18 +256,18 @@ public class SchoolServer extends EyeBase {
         Lesson l = DBConnection.GetInstance().getLessonById(id);
         if (l == null)
         {
-            Log("Lesson with id:"+ id +" is not exists.");
+            log("Lesson with id:"+ id +" is not exists.");
             return;
         }
 
         //Start active lesson
         if (m_classesActiveLesson.containsKey(class_id))
         {
-            Log(String.format("Class %s has lesson that deleted", classMap.get(class_id)));
+            log(String.format("Class %s has lesson that deleted", classMap.get(class_id)));
             m_classesActiveLesson.remove(class_id);
         }
 
-        Log(String.format("Lesson(%s), id:%d is up", l.get_lessonHeadline(), id));
+        log(String.format("Lesson(%s), id:%d is up", l.get_lessonHeadline(), id));
         m_classesActiveLesson.put(class_id, new ActiveLesson(l, classMap.get(class_id).getStudents()));
     }
 
@@ -280,7 +276,7 @@ public class SchoolServer extends EyeBase {
         Map<String, CommonEnums.StudentConcentratedStatus> retVal = new HashMap<>();
         if (!(m_classesActiveLesson.containsKey(class_id)))
         {
-            Log("Failed to find active lesson for class: " + class_id);
+            log("Failed to find active lesson for class: " + class_id);
         }
         else
         {
@@ -298,7 +294,7 @@ public class SchoolServer extends EyeBase {
         if (m_classesActiveLesson.containsKey(studentClassId))
             m_classesActiveLesson.get(studentClassId).handleMeasureParam(param);
         else
-            Log("Unable ro find class_id: " + studentClassId);
+            log("Unable ro find class_id: " + studentClassId);
     }
 
     public long getTeacherIdByClass(String class_id) {return m_classesActiveLesson.get(class_id).getTeacherId();}
@@ -338,16 +334,16 @@ public class SchoolServer extends EyeBase {
         {
             m_classesActiveLesson.get(class_id).endLesson();
             m_classesActiveLesson.remove(class_id);
-            Log(String.format("Lesson for class [%s] is down", class_id));
+            log(String.format("Lesson for class [%s] is down", class_id));
         }
         else
-            Log(String.format("Lesson for class [%s] not found", class_id));
+            log(String.format("Lesson for class [%s] not found", class_id));
     }
 
-    public ArrayList<MultipleQuestion> getLessonQuestions(String class_id){
+    public List<MultipleQuestion> getLessonQuestions(String class_id){
         if (!(m_classesActiveLesson.containsKey(class_id)))
         {
-            Log("Failed to find active lesson for class: " + class_id);
+            log("Failed to find active lesson for class: " + class_id);
         }
         return m_classesActiveLesson.get(class_id).get_questions();
     }
