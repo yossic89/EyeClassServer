@@ -157,6 +157,12 @@ public class EyeClassEngine extends EyeBase {
             System.out.println("Can't save question statistic of student to db");
     }
 
+    public String addTeacher(Admin a, Teacher t){return schoolsMap.get(a.get_schoolId()).addTeacher(t);}
+
+    public String addAdmin(Admin a, Admin new_admin){return schoolsMap.get(a.get_schoolId()).addAdmin(new_admin);}
+
+    public String addStudent(Admin a, Student s){return schoolsMap.get(a.get_schoolId()).addStudentToClass(s.getStudentClassId(), s);}
+
     public List<AdminDistractionParamViewModel> getDistractionForAdmin(Admin a){return schoolsMap.get(a.get_schoolId()).getDistractionForAdmin();}
 
     public List<UsersViewModel> getAllUsersViewModel(Admin a){return schoolsMap.get(a.get_schoolId()).getAllUsersViewModel();}

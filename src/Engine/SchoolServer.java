@@ -44,6 +44,7 @@ public class SchoolServer extends EyeBase {
     }
 
     public List<SchoolEntity.Class> getAllClasses() {
+
         return DBConnection.GetInstance().getAllClassesBySchool(m_school.GetName());
     }
 
@@ -91,24 +92,30 @@ public class SchoolServer extends EyeBase {
         return DBConnection.GetInstance().getClassByName(id);
     }
 
-    public boolean addTeacher(Teacher t)
+    public String addTeacher(Teacher t)
     {
+        String err = "";
         if (!checkIfUserExist(t.getM_id())) usersMap.put(t.getM_id(),t);
         else{
-            Log("addTeacher: The user with Id: "+ t.getM_id() + " is already exist");
-            return false;
+            err = ("The user with Id: "+ t.getM_id() + " is already exist");
+            return err;
         }
-        return DBConnection.GetInstance().Save(t);
+        if (!DBConnection.GetInstance().Save(t))
+            err = "Internal DB error";
+        return err;
     }
 
-    public boolean addAdmin(Admin a)
+    public String addAdmin(Admin a)
     {
+        String err = "";
         if (!checkIfUserExist(a.getM_id())) usersMap.put(a.getM_id(),a);
         else{
-            Log("addAdmin: The user with Id: "+ a.getM_id() + " is already exist");
-            return false;
+            err =("addAdmin: The user with Id: "+ a.getM_id() + " is already exist");
+            return err;
         }
-        return DBConnection.GetInstance().Save(a);
+        if (!DBConnection.GetInstance().Save(a))
+            err = "Internal DB error";
+        return err;
     }
 
     public List<UsersViewModel> getAllUsersViewModel()
@@ -153,23 +160,35 @@ public class SchoolServer extends EyeBase {
         return c.GetClassName();
     }
 
-    public boolean addStudentToClass(String classId,Student student){
+    public String addStudentToClass(String classId,Student student){
+        String err = "";
         //Add student to student maps
         if (!checkIfUserExist(student.getM_id())) usersMap.put(student.getM_id(),student);
         else{
-            Log("addStudentToClass: The user with Id: "+ student.getM_id() + " is already exist");
-            return false;
+            err = ("The user with Id: "+ student.getM_id() + " is already exist");
+            return err;
         }
 
         //check if class exist
-        if (!checkIfClassExist(classId)) return false;
+        if (!checkIfClassExist(classId))
+        {
+            err = "Class: " + classId + "not exsits in the system";
+            return err;
+        }
         Class c = getClassFromMap(classId);
 
         //add student to instance class and to db
-        if (!c.AddStudent(student.getM_id())) return false;
-        if (!DBConnection.GetInstance().Save(student)) return false;
+        if (!c.AddStudent(student.getM_id()))
+        {
+            err = "User " + student.getM_fullName() + " is already in the class";
+            return err;
+        }
+        if (!DBConnection.GetInstance().Save(student)){
+            err = "Internal DB error";
+            return err;
+        }
         Log("addStudentToClass: The student: "+ student.getM_id() + " added to class: "+classId);
-        return true;
+        return err;
     }
 
     //Users

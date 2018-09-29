@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DBBuilder:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DBBuilder_jar</output-path>
+    <root id="archive" name="DBBuilder.jar">
+      <element id="module-output" name="DBBuilder" />
+      <element id="module-output" name="EyeClassServer" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/WebController/web/WEB-INF/lib/gson-2.2.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/WebController/web/WEB-INF/lib/objectdb.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
