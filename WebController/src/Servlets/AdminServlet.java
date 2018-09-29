@@ -28,7 +28,6 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        System.out.println("aaaaaa "+ req.getParameter(Constans.REQUEST));
         switch (req.getParameter(Constans.REQUEST)) {
             case Constans.USERS_LIST:
                 usersList(req, resp);
