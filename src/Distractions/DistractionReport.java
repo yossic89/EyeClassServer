@@ -27,7 +27,7 @@ public class DistractionReport extends EyeBase {
             addDistraction(type, measure.getStudent_id());
         else
             handleLastDistraction(measure.getStudent_id());
-        Log(String.format("handleMeasure for student id [%d], eyes count [%d], student page [%d]. teacher page [%d], STATUS: [%s]"
+        log(String.format("handleMeasure for student id [%d], eyes count [%d], student page [%d]. teacher page [%d], STATUS: [%s]"
         , measure.getStudent_id(), measure.getEyes_count(), measure.getPage(), teacherPage, type.toString()));
         //show image if has one
         if (measure.getPhoto_arr() != null)
@@ -123,7 +123,7 @@ public class DistractionReport extends EyeBase {
             for(DistractionParam param : iter.getValue())
             {
                 if (!DBConnection.GetInstance().Save(param))
-                    Log(String.format("Failed to update DistractionParam for id [%d]", iter.getKey()));
+                    log(String.format("Failed to update DistractionParam for id [%d]", iter.getKey()));
             }
         }
 

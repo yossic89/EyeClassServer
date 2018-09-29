@@ -13,7 +13,7 @@ import java.util.Calendar;
 
 public class Logger {
 
-    public static void Log(String data) throws IOException {
+    public static void log(String data) throws IOException {
         if (m_log == null)
             m_log = new Logger();
         m_log.write(data);

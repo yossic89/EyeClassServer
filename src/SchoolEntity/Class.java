@@ -29,7 +29,7 @@ public class Class extends EyeBase implements Serializable {
         return true;
     }
 
-    public ArrayList<Long> getStudents() {
+    public List<Long> getStudents() {
         return students;
     }
 
@@ -42,7 +42,7 @@ public class Class extends EyeBase implements Serializable {
     private CommonEnums.SchoolClasses grade;
     private int grade_id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private ArrayList<Long> students;
+    private List<Long> students;
 
 
 }

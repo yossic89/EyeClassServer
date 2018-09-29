@@ -109,7 +109,7 @@ public class ConsoleUT {
     private void showLesson()
     {
         //get all teachers
-        ArrayList<Long> teachersIdLong = server.getAllTeacherId();
+        List<Long> teachersIdLong = server.getAllTeacherId();
         ArrayList<String> teacherIdStr = new ArrayList<>();
         for (long l : teachersIdLong)
             teacherIdStr.add(Long.toString(l));
@@ -117,21 +117,13 @@ public class ConsoleUT {
         int indx = handleList(teacherIdStr);
 
         //get all lessons for this teacher
-        ArrayList<Lesson> lessons = server.getAllLessonsForTeacher(teachersIdLong.get(indx));
+        List<Lesson> lessons = server.getAllLessonsForTeacher(teachersIdLong.get(indx));
         for (Lesson l : lessons)
         {
             System.out.println("LESSON:");
             System.out.println("Headline: " + l.get_lessonHeadline());
             System.out.println("Lesson pdf store in: " + l.get_filePath());
             System.out.println("Curriculum: " + l.get_curriculum());
-
-            //print multi ques
-//            for (MultipleQuestion q : l.get_questions())
-//            {
-//                System.out.println("Q: " + q.getQuestionWithAns().getQuestion());
-//                System.out.println("A: " + q.getRightAns());
-//                System.out.println("Options: " + Arrays.toString(q.getQuestionWithAns().getOptions()));
-//            }
             System.out.println();
         }
     }
@@ -206,11 +198,11 @@ public class ConsoleUT {
         String pass = scr.nextLine();
         System.out.print("Enter full name: ");
         String name = scr.nextLine();
-        ArrayList<CommonEnums.Curriculum> l = getCurriculum();
+        List<CommonEnums.Curriculum> l = getCurriculum();
         server.addTeacher(new Teacher(id, pass, server.getSchool().GetName(), name, l));
     }
 
-    private ArrayList<CommonEnums.Curriculum> getCurriculum()
+    private List<CommonEnums.Curriculum> getCurriculum()
     {
         //print
         System.out.println("Select curriculum id, separated by comma");

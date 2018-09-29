@@ -5,6 +5,7 @@ import SchoolEntity.UsersEntity.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class School extends EyeBase {
@@ -31,5 +32,5 @@ public class School extends EyeBase {
     private String address;
     //@ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Class.class)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    ArrayList<String> classes;
+    List<String> classes;
 }
