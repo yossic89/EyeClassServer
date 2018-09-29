@@ -41,5 +41,8 @@ public class Constans {
     //Admin
     public static final String USERS_LIST = "users_list";
     public static final String ADMIN_DISTRACTIONS = "admin_distractions";
-
+    public static final String CURRICULUM_LIST="cur_list";
+    public static final String ADD_TEACHER="add_teacher";
+    public static final String ADD_STUDENT="add_student";
+    public static final String ADD_ADMIN="add_admin";
 }
