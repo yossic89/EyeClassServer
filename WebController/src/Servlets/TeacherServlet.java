@@ -76,6 +76,8 @@ public class TeacherServlet extends HttpServlet {
         return s.hasNext() ? s.next() : "";
     }
 
+    ///this is work around to check student without teacher application
+    /// this get method doenst work from appication, it works only from browesr links
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -84,16 +86,26 @@ public class TeacherServlet extends HttpServlet {
         {
             System.out.println("DEBUG MODE - Start");
             ArrayList<CommonEnums.Curriculum> a = new ArrayList<>();
-            Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
-            EyeClassEngine.GetInstance().StartLesson(t, 1, "ORT Eilat_Grade11_1");
+            Teacher t = new Teacher(111111111,"12345", "Lakewood Elwood", "Test me please", a);
+            EyeClassEngine.GetInstance().StartLesson(t, 1, "Lakewood Elwood_Grade11_1");
         }
 
         if (param.contains("end"))
         {
             System.out.println("DEBUG MODE - End");
             ArrayList<CommonEnums.Curriculum> a = new ArrayList<>();
-            Teacher t = new Teacher(111111111,"12345", "ORT Eilat", "Test me please", a);
-            EyeClassEngine.GetInstance().endLesson(t, "ORT Eilat_Grade11_1");
+            Teacher t = new Teacher(111111111,"12345", "Lakewood Elwood", "Test me please", a);
+            EyeClassEngine.GetInstance().endLesson(t,  "Lakewood Elwood_Grade11_1");
+        }
+
+        if (param.contains("que"))
+        {
+            System.out.println("DEBUG MODE - Question");
+            ArrayList<CommonEnums.Curriculum> a = new ArrayList<>();
+
+            Teacher t = new Teacher(111111111,"12345", "Lakewood Elwood", "Test me please", a);
+            String queJson = "{\"id\":2,\"question\":\"how much is 1 + 1\",\"rightAns\":\"2\",\"wrongOptions\":[\"1\",\"11\",\"3\"],\"topic\":\"basic que\",\"time\":100}";
+            EyeClassEngine.GetInstance().setQuestionDataForDelivery(t, "Lakewood Elwood_Grade11_1", queJson);
         }
     }
 
