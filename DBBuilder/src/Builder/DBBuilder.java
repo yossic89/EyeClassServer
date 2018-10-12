@@ -71,7 +71,7 @@ public class DBBuilder {
                 server.addClass(new Class(cl, id, server.getSchool()));
         }
         //class Ya 1
-        m_class = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade11, 1).getID();
+        m_class = server.getClassByGradeId(CommonEnums.SchoolClasses.Grade10, 1).getID();
 
         //Add Admin
         server.addAdmin(new Admin(999999999, "54321", server.getSchool().GetName(), "Cecilia Tingley"));
